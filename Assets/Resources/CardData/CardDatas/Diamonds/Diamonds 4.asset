@@ -16,4 +16,4 @@ MonoBehaviour:
   cardSymbol: 1
   cardType: 0
   iconSprite: {fileID: -1162174132, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
-  imageSprite: {fileID: 45249266, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
+  imageSprite: {fileID: -1162174132, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
