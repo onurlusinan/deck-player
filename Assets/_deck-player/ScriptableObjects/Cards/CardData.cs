@@ -10,7 +10,8 @@ using DeckPlayer.CardSystem;
 public class CardData : ScriptableObject
 {
     public int value;
+    public CardSymbol cardSymbol;
     public CardType cardType;
-    public Image icon;
-    public Image image;
+    public Sprite iconSprite;
+    public Sprite imageSprite;
 }
