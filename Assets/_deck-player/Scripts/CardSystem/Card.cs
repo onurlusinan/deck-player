@@ -15,23 +15,25 @@ namespace DeckPlayer.CardSystem
         clubs
     }
 
-    public class CardDisplay
-    {
-        public TextMeshProUGUI value;
-        public Image icon;
-        public Image image;
-    }
-
     public class Card : MonoBehaviour
     {
         private CardType _type;
 
         [Header("Card-Display Configuration")]
-        public CardDisplay display; 
-        
+        public TextMeshProUGUI value;
+        public Image icon;
+        public Image image;
+
+        /// <summary>
+        /// Fills the card UI based on the CardData
+        /// </summary>
         public void FillCard(CardData cardData)
         {
-                
+            _type = cardData.cardType;
+
+            this.value.SetText(cardData.value.ToString());
+            this.icon = cardData.icon;
+            this.image = cardData.image;
         }
     }
 }
