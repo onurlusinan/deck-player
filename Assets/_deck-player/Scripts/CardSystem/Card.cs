@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
+using UnityEngine.EventSystems;
+using DG.Tweening;
 
 namespace DeckPlayer.CardSystem
 {
@@ -23,7 +25,7 @@ namespace DeckPlayer.CardSystem
         queen
     }
 
-    public class Card : MonoBehaviour
+    public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         [Header("Card Info:")]
         [SerializeField] private CardSymbol _symbol;
@@ -37,6 +39,16 @@ namespace DeckPlayer.CardSystem
 
         public CardSymbol GetSymbol() => _symbol;
         public int GetValue() => _value;
+        
+        // for drag & drop
+        private RectTransform cardRect;
+        private Canvas gameCanvas;
+
+        private void Awake()
+        {
+            cardRect = GetComponent<RectTransform>();
+            gameCanvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
+        }
 
         /// <summary>
         /// Fills the card UI based on the CardData
@@ -72,5 +84,25 @@ namespace DeckPlayer.CardSystem
                         return "A";
             }
         }
+
+        #region drag-drop
+        public void OnDrag(PointerEventData eventData)
+        {
+            cardRect.anchoredPosition += eventData.delta / gameCanvas.scaleFactor;
+            cardRect.DORotateQuaternion(Quaternion.identity, 0.2f);
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            cardRect.DOScale(1.3f, 0.2f);
+            cardRect.DOAnchorPos3DZ(1f, 0.2f);
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            cardRect.DOScale(1.0f, 0.2f);
+            cardRect.DOAnchorPos3DZ(0f, 0.2f);
+        }
+        #endregion
     }
 }

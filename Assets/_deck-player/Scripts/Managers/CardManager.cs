@@ -52,7 +52,7 @@ public class CardManager : MonoBehaviour
             
             RectTransform cardRect = newCard.GetComponent<RectTransform>();
             cardRect.anchoredPosition = initialCardOffset;
-            cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.5f).SetEase(Ease.OutBounce);
+            cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.5f).SetEase(Ease.OutExpo);
 
             yield return cardDrawDelay;
         }
