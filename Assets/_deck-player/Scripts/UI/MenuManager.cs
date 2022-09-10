@@ -24,12 +24,12 @@ public class MenuManager : MonoBehaviour
     private IEnumerator InitializeMenu()
     {
         yield return new WaitForSeconds(0.25f);
-        overlay.ShowOverlay(false);
+        overlay.ShowOverlay(false, 0f);
     }
 
 
     public void StartButton()
     {
-        overlay.ShowOverlay(true, () => SceneManager.LoadScene((int)SceneType.game));
+        overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.game));
     }
 }

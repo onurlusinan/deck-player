@@ -13,18 +13,21 @@ public class Overlay : MonoBehaviour
         overlay = GetComponent<Image>();
     }
 
-    public void ShowOverlay(bool show, Action OnComplete = null)
+    public void ShowOverlay(bool show, float delay, Action OnComplete = null)
     {
+        Sequence overlaySeq = DOTween.Sequence();
         if (show)
         {
-            overlay.DOFade(1.0f, 0.2f).OnComplete(() =>
+            overlaySeq.AppendInterval(delay);
+            overlaySeq.Append(overlay.DOFade(1.0f, 0.5f)).OnComplete(() =>
             {
                 OnComplete?.Invoke();
             });
         }
         else
         {
-            overlay.DOFade(0.0f, 0.2f).OnComplete(() =>
+            overlaySeq.AppendInterval(delay);
+            overlaySeq.Append(overlay.DOFade(0.0f, 0.5f)).OnComplete(() =>
             {
                 OnComplete?.Invoke();
             });

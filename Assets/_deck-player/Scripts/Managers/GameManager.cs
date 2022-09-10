@@ -7,10 +7,20 @@ namespace DeckPlayer.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        public static GameManager Instance;
+
         [Header("Game Manager Configuration")]
         public Overlay overlay;
         public RectTransform cardDeck;
         public RectTransform controlPanel;
+
+        private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
+        }
 
         private void Start()
         {
@@ -19,19 +29,46 @@ namespace DeckPlayer.Managers
 
         private void StartGame()
         {
-            overlay.ShowOverlay(false, () =>
-            {
-                cardDeck.DOAnchorPosY(0.0f, 0.2f);
-                controlPanel.DOAnchorPosY(0.0f, 0.4f).OnComplete(() =>
-                                controlPanel.GetComponent<CanvasGroup>().interactable = true
-                );
-            });
+            overlay.ShowOverlay(false, 0.5f, () =>
+                {
+                    StartCoroutine(CardManager.Instance.DrawRandomCards(() =>
+                        EnableInput(true)
+                    ));
+                }
+            );
+        }
+
+        public void EnableInput(bool enable)
+        {
+            if(enable)
+                controlPanel.DOAnchorPosY(10f, 0.5f);
+            else
+                controlPanel.DOAnchorPosY(-480f, 0.2f);
+
+            controlPanel.GetComponent<CanvasGroup>().interactable = enable;
         }
 
         public void BackButton()
         {
-            overlay.ShowOverlay(true, () => SceneManager.LoadScene((int)SceneType.menu));
+            overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.menu));
         }
+
+        #region Sort-Buttons
+
+        public void OneTwoThreeSortButton()
+        {
+            
+        }
+        public void TripleSevenSortButton()
+        { 
+            
+        }
+        public void SmartSortButton()
+        { 
+            
+        }
+
+        #endregion
     }
 }
 
