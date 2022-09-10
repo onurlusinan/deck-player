@@ -19,8 +19,18 @@ public class CardSlot : MonoBehaviour, IDropHandler
             GameObject card = eventData.pointerDrag;
             RectTransform cardRect = card.GetComponent<RectTransform>();
             cardRect.SetParent(slotRect, false);
-            cardRect.anchoredPosition = Vector3.zero;
+            cardRect.DOAnchorPos(Vector3.zero, 0.2f);
             cardRect.DOLocalRotateQuaternion(Quaternion.identity, 0.2f);
+        }
+        else
+        {
+            GameObject prevCardSlot = eventData.pointerEnter;
+            RectTransform prevCardSlotRect = prevCardSlot.GetComponent<RectTransform>();
+
+            GameObject card = eventData.pointerDrag;
+            RectTransform cardRect = card.GetComponent<RectTransform>();
+
+            cardRect.DOAnchorPos(prevCardSlotRect.position, 0.2f);
         }
     }
 }
