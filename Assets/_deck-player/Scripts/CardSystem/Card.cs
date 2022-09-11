@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using DeckPlayer.Managers;
 
 namespace DeckPlayer.CardSystem
 {
@@ -43,6 +44,8 @@ namespace DeckPlayer.CardSystem
         // for drag & drop
         private RectTransform cardRect;
         private Canvas gameCanvas;
+
+        public CardSlot currentSlot;
 
         private void Awake()
         {
@@ -90,18 +93,22 @@ namespace DeckPlayer.CardSystem
         {
             cardRect.anchoredPosition += eventData.delta / gameCanvas.scaleFactor;
             cardRect.DORotateQuaternion(Quaternion.identity, 0.2f);
+
+            DeckManager.Instance.draggingCard = true;
+            DeckManager.Instance.draggedCardX = cardRect.anchoredPosition.x;
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
             cardRect.DOScale(1.3f, 0.2f);
-            cardRect.DOAnchorPos3DZ(1f, 0.2f);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
+            DeckManager.Instance.draggingCard = false;
+
             cardRect.DOScale(1.0f, 0.2f);
-            cardRect.DOAnchorPos3DZ(0f, 0.2f);
+            DeckManager.Instance.SetCardToSlot(this, currentSlot);
         }
         #endregion
     }

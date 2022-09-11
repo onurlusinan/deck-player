@@ -5,19 +5,20 @@ using UnityEngine;
 
 using DeckPlayer.CardSystem;
 using DG.Tweening;
+using DeckPlayer.Managers;
 
 public class CardManager : MonoBehaviour
 {
     public static CardManager Instance;
 
-    [Header("Card-Manager Config")]
-    public int initialCardAmount;
+    [Header("CardManager Config")]
+    public float initialCardPosOffsetY = -600f;
+    public float cardDrawDelay = 0.2f;
     public GameObject cardPrefab;
-    public Transform cardDeck;
-    
     public List<Card> currentCards; // 11 cards
+
+    private int initialCardAmount = 11;
     private CardDataCollection cardCollection; // 52 card datas
-    private List<Transform> cardSlots;
 
     private void Awake()
     {
@@ -26,30 +27,35 @@ public class CardManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        // Load card data collection
         cardCollection = Resources.Load<CardDataCollection>("CardData/CardDataCollection");
-        cardSlots = new List<Transform>();  
-        PrepareDeck();
     }
 
-    public void PrepareDeck()
-    {
-        foreach(Transform cardSlot in cardDeck)
-            cardSlots.Add(cardSlot); // TODO: Make this dynamic
-    }
-
+    /// <summary>
+    /// Draws random cards as much as the initialCardAmount
+    /// </summary>
     public IEnumerator DrawRandomCards(Action OnComplete = null)
     {
         CardData[] collection = cardCollection.GetCollection();
         int collectionAmount = collection.Length;
-        Vector3 initialCardOffset = new Vector3(0f, -600f, 0f);
+
+        Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
+
         WaitForSeconds cardDrawDelay = new WaitForSeconds(0.2f);
+
+        int randomIndex;
 
         for (int i = 0; i < initialCardAmount; i++)
         {
-            int randomIndex = UnityEngine.Random.Range(0, collectionAmount);
+            randomIndex = UnityEngine.Random.Range(0, collectionAmount);
             GameObject newCard = CreateCard(collection[randomIndex]);
-            newCard.transform.SetParent(cardSlots[i], false);
+            Transform cardSlot = DeckManager.Instance.GetCardSlot(i);
+            newCard.transform.SetParent(cardSlot, false);
+
+            // set current card slot
+            newCard.GetComponent<Card>().currentSlot = cardSlot.GetComponent<CardSlot>();
             
+            // draw animation
             RectTransform cardRect = newCard.GetComponent<RectTransform>();
             cardRect.anchoredPosition = initialCardOffset;
             cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.5f).SetEase(Ease.OutExpo);
@@ -60,6 +66,9 @@ public class CardManager : MonoBehaviour
         OnComplete?.Invoke();
     }
 
+    /// <summary>
+    /// Creates and initiates card from card data
+    /// </summary>
     private GameObject CreateCard(CardData cardData)
     {
         GameObject cardObject = Instantiate(cardPrefab);

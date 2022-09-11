@@ -41,7 +41,7 @@ namespace DeckPlayer.Managers
         public void EnableInput(bool enable)
         {
             if(enable)
-                controlPanel.DOAnchorPosY(10f, 0.5f).SetEase(Ease.OutExpo);
+                controlPanel.DOAnchorPosY(100f, 0.5f).SetEase(Ease.OutExpo);
             else
                 controlPanel.DOAnchorPosY(-480f, 0.2f);
 

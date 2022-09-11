@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2222357695232851094}
   - component: {fileID: 2222357695232851095}
+  - component: {fileID: 8004593662143942245}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -56,6 +57,28 @@ MonoBehaviour:
   valueText: {fileID: 2222357695286655870}
   iconImage: {fileID: 2222357695398655291}
   cardImage: {fileID: 2222357696467375450}
+  currentSlot: {fileID: 0}
+--- !u!50 &8004593662143942245
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2222357695232851097}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &2222357695286655744
 GameObject:
   m_ObjectHideFlags: 0
