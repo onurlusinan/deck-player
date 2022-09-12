@@ -105,7 +105,7 @@ namespace DeckPlayer.CardSystem
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (!GameManager.Instance.globalInput)
+            if (!GameManager.Instance.globalInput) // TODO: Doesnt work
                 return;
 
             cardRect.DOScale(1.3f, 0.2f);

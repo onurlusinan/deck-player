@@ -13,7 +13,7 @@ namespace DeckPlayer.Managers
         public static DeckManager Instance;
 
         public RectTransform cardDeck;
-        public float sortCardDelay = 0.25f;
+        public float sortCardDelay = 0.5f;
 
         [HideInInspector]
         public bool draggingCard = false;
@@ -63,32 +63,45 @@ namespace DeckPlayer.Managers
         {
             WaitForSeconds sortDelay = new WaitForSeconds(sortCardDelay);
 
+            for(int i = 0; i < cardSlots.Count; i++)
+            {
+                RectTransform card = cardSlots[i].GetComponent<CardSlot>().currentCard.GetComponent<RectTransform>(); ;
+                card.DOAnchorPosY(card.anchoredPosition.y + 300f, 0.25f);
+            }
+
+            yield return null;
+
             for(int i = 0; i < sortedList.Count; i++)
             {
-                SetCardToSlot(sortedList[i], cardSlots[i].GetComponent<CardSlot>(), 0.25f);
+                SetCardToSlot(sortedList[i], cardSlots[i].GetComponent<CardSlot>(), 0.5f, true);
                 yield return sortDelay;
             }
                 
             GameManager.Instance.EnableInput(true);
         }
 
-        public void SetCardToSlot(Card card, CardSlot cardSlot, float duration)
+        private void MoveCardToSlot(Card card, CardSlot cardSlot, float duration)
         {
-            if (cardSlot.currentCard)
+            RectTransform cardRect = card.GetComponent<RectTransform>();
+            RectTransform slotRect = cardSlot.GetComponent<RectTransform>();
+
+            cardRect.SetParent(slotRect, false);
+            cardRect.DOAnchorPos(Vector3.zero, duration);
+            cardRect.DOLocalRotateQuaternion(Quaternion.identity, 0.2f);
+        }
+
+        public void SetCardToSlot(Card card, CardSlot cardSlot, float duration, bool isSortMode = false)
+        {
+            if (cardSlot.currentCard && !isSortMode)
                 return;
 
             settingCard = true;
-
-            RectTransform cardRect = card.GetComponent<RectTransform>();
-            RectTransform slotRect = cardSlot.GetComponent<RectTransform>();
 
             card.currentSlot = cardSlot;
             card.targetCardSlot = null;
             cardSlot.currentCard = card;
 
-            cardRect.SetParent(slotRect, false);
-            cardRect.DOAnchorPos(Vector3.zero, duration);
-            cardRect.DOLocalRotateQuaternion(Quaternion.identity, 0.2f);
+            MoveCardToSlot(card, cardSlot, duration);
 
             settingCard = false;
         }
