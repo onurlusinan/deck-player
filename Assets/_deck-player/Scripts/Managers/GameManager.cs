@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using DG.Tweening;
+using DeckPlayer.CardSystem;
+using System.Collections.Generic;
 
 namespace DeckPlayer.Managers
 {
@@ -13,6 +15,8 @@ namespace DeckPlayer.Managers
         public Overlay overlay;
         public RectTransform cardDeck;
         public RectTransform controlPanel;
+
+        public bool globalInput = true;
 
         private void Awake()
         {
@@ -40,12 +44,13 @@ namespace DeckPlayer.Managers
 
         public void EnableInput(bool enable)
         {
+            globalInput = enable;
             controlPanel.GetComponent<CanvasGroup>().interactable = enable;
 
             if (enable)
-                controlPanel.DOAnchorPosY(100f, 0.5f).SetEase(Ease.OutExpo);
+                controlPanel.DOAnchorPosY(100f, 0.3f).SetEase(Ease.OutExpo);
             else
-                controlPanel.DOAnchorPosY(-480f, 0.4f);
+                controlPanel.DOAnchorPosY(-480f, 0.3f);
         }
 
         public void BackButton()
@@ -58,14 +63,32 @@ namespace DeckPlayer.Managers
         public void OneTwoThreeSortButton()
         {
             EnableInput(false);
+            
+            StartCoroutine(
+                DeckManager.Instance.SortCardsFromList(
+                    CardManager.Instance.OneTwoThreeSort()
+                    )
+                );
         }
         public void TripleSevenSortButton()
         {
             EnableInput(false);
+
+            StartCoroutine(
+                DeckManager.Instance.SortCardsFromList(
+                    CardManager.Instance.TripleSevenSort()
+                    )
+                );
         }
         public void SmartSortButton()
         {
             EnableInput(false);
+
+            StartCoroutine(
+                DeckManager.Instance.SortCardsFromList(
+                    CardManager.Instance.SmartSort()
+                    )
+                );
         }
 
         #endregion

@@ -105,10 +105,12 @@ namespace DeckPlayer.CardSystem
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            if (!GameManager.Instance.globalInput)
+                return;
+
             cardRect.DOScale(1.3f, 0.2f);
 
             currentSlot.currentCard = null;
-            DeckManager.Instance.lastVisitedSlot = currentSlot;
         }
 
         public void OnPointerUp(PointerEventData eventData)

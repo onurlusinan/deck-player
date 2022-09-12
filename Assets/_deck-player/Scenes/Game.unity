@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 79480508}
   - component: {fileID: 79480509}
   m_Layer: 5
-  m_Name: CardSlot (6)
+  m_Name: CardSlot (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &79480509
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -543,7 +544,7 @@ GameObject:
   - component: {fileID: 178816416}
   - component: {fileID: 178816417}
   m_Layer: 5
-  m_Name: CardSlot (10)
+  m_Name: CardSlot (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -582,6 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &178816417
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -606,7 +608,7 @@ GameObject:
   - component: {fileID: 185179864}
   - component: {fileID: 185179865}
   m_Layer: 5
-  m_Name: CardSlot (4)
+  m_Name: CardSlot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -645,6 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &185179865
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -669,7 +672,7 @@ GameObject:
   - component: {fileID: 312467166}
   - component: {fileID: 312467167}
   m_Layer: 5
-  m_Name: CardSlot (2)
+  m_Name: CardSlot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -708,6 +711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &312467167
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1430,7 +1434,7 @@ GameObject:
   - component: {fileID: 546575061}
   - component: {fileID: 546575062}
   m_Layer: 5
-  m_Name: CardSlot (11)
+  m_Name: CardSlot (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1469,6 +1473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &546575062
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1625,7 +1630,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd961f1809e816a43a9afb59aecf0aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialCardAmount: 11
   initialCardPosOffsetY: -600
   cardDrawDelay: 0.2
   cardPrefab: {fileID: 2222357695232851097, guid: e40c9b87ef913684d98893daaf1d0132, type: 3}
@@ -1642,7 +1646,7 @@ GameObject:
   - component: {fileID: 817500562}
   - component: {fileID: 817500563}
   m_Layer: 5
-  m_Name: CardSlot (9)
+  m_Name: CardSlot (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1681,6 +1685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &817500563
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2153,7 +2158,7 @@ GameObject:
   - component: {fileID: 1249259041}
   - component: {fileID: 1249259042}
   m_Layer: 5
-  m_Name: CardSlot (7)
+  m_Name: CardSlot (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2192,6 +2197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &1249259042
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2216,7 +2222,7 @@ GameObject:
   - component: {fileID: 1257549594}
   - component: {fileID: 1257549595}
   m_Layer: 5
-  m_Name: CardSlot (8)
+  m_Name: CardSlot (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2255,6 +2261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &1257549595
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2631,6 +2638,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDeck: {fileID: 1944880835}
+  lastVisitedSlot: {fileID: 0}
+  draggingCard: 0
+  draggedCard: {fileID: 0}
 --- !u!1 &1562688613
 GameObject:
   m_ObjectHideFlags: 0
@@ -3164,7 +3174,7 @@ GameObject:
   - component: {fileID: 1673324006}
   - component: {fileID: 1673324007}
   m_Layer: 5
-  m_Name: CardSlot (1)
+  m_Name: CardSlot (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3203,6 +3213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &1673324007
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3227,7 +3238,7 @@ GameObject:
   - component: {fileID: 1684697390}
   - component: {fileID: 1684697391}
   m_Layer: 5
-  m_Name: CardSlot (5)
+  m_Name: CardSlot (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3266,6 +3277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &1684697391
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3448,7 +3460,7 @@ GameObject:
   - component: {fileID: 1886674816}
   - component: {fileID: 1886674817}
   m_Layer: 5
-  m_Name: CardSlot (3)
+  m_Name: CardSlot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3487,6 +3499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9a761ddcd3e4d4c8e7ff97deeb876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCard: {fileID: 0}
 --- !u!225 &1886674817
 CanvasGroup:
   m_ObjectHideFlags: 0

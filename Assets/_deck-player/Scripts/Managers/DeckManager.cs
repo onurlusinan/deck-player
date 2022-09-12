@@ -4,6 +4,7 @@ using UnityEngine;
 using DeckPlayer.CardSystem;
 using DG.Tweening;
 using System;
+using System.Collections;
 
 namespace DeckPlayer.Managers
 { 
@@ -12,7 +13,7 @@ namespace DeckPlayer.Managers
         public static DeckManager Instance;
 
         public RectTransform cardDeck;
-        public CardSlot lastVisitedSlot = null;
+        public float sortCardDelay = 0.25f;
 
         [HideInInspector]
         public bool draggingCard = false;
@@ -21,6 +22,7 @@ namespace DeckPlayer.Managers
 
         private List<RectTransform> cardSlots;
 
+        private bool settingCard = false;
         private float draggedCardX;
         private CardSlot slotCurrent;
         private CardSlot slotPrev;
@@ -40,7 +42,7 @@ namespace DeckPlayer.Managers
 
         private void Update()
         {
-            if(draggingCard)
+            if(draggingCard && !settingCard)
             {
                 ArrangeDeckPositions();
             }
@@ -57,20 +59,38 @@ namespace DeckPlayer.Managers
             return cardSlots[index];
         }
 
+        public IEnumerator SortCardsFromList(List<Card> sortedList)
+        {
+            WaitForSeconds sortDelay = new WaitForSeconds(sortCardDelay);
+
+            for(int i = 0; i < sortedList.Count; i++)
+            {
+                SetCardToSlot(sortedList[i], cardSlots[i].GetComponent<CardSlot>(), 0.25f);
+                yield return sortDelay;
+            }
+                
+            GameManager.Instance.EnableInput(true);
+        }
+
         public void SetCardToSlot(Card card, CardSlot cardSlot, float duration)
         {
             if (cardSlot.currentCard)
                 return;
 
+            settingCard = true;
+
             RectTransform cardRect = card.GetComponent<RectTransform>();
             RectTransform slotRect = cardSlot.GetComponent<RectTransform>();
+
+            card.currentSlot = cardSlot;
+            card.targetCardSlot = null;
+            cardSlot.currentCard = card;
 
             cardRect.SetParent(slotRect, false);
             cardRect.DOAnchorPos(Vector3.zero, duration);
             cardRect.DOLocalRotateQuaternion(Quaternion.identity, 0.2f);
 
-            card.currentSlot = cardSlot;
-            cardSlot.currentCard = card;
+            settingCard = false;
         }
 
         private void ArrangeDeckPositions()
@@ -87,7 +107,6 @@ namespace DeckPlayer.Managers
                 // card slot's X value
                 slotCurrent = cardSlots[i].GetComponent<CardSlot>();
                 RectTransform slotCurrentRect = slotCurrent.GetComponent<RectTransform>();
-                float slotCurrentX = slotCurrentRect.position.x;
 
                 Vector3[] slotWorldCorners = new Vector3[4];
                 slotCurrentRect.GetWorldCorners(slotWorldCorners);
@@ -100,46 +119,25 @@ namespace DeckPlayer.Managers
                 {
                     Debug.Log("Visiting slot " + i);
 
-                    
+                    slotCurrent = cardSlots[i].GetComponent<CardSlot>();
+
+                    slotPrev = cardSlots[i-1]?.GetComponent<CardSlot>();
+                    slotNext = cardSlots[i+1]?.GetComponent<CardSlot>();
+
+                    if (!slotNext?.currentCard && slotCurrent.currentCard)
+                    {
+                        SetCardToSlot(slotCurrent.currentCard, slotNext, 0.2f);
+                    }
+
+                    if (!slotPrev?.currentCard && slotCurrent.currentCard)
+                    {
+                        SetCardToSlot(slotCurrent.currentCard, slotPrev, 0.2f);
+                    }
+
+                    slotCurrent.currentCard = null;
+                    draggedCard.targetCardSlot = slotCurrent;
                 }
             }
-
-
-            #region prev-algo
-
-            /************************************************************/
-
-            // move cardSlots[i] to a slot that's current card is null
-            //slotPrev = cardSlots[i-1].GetComponent<CardSlot>();
-            //slotNext = cardSlots[i+1].GetComponent<CardSlot>();
-
-            //if (!slotNext.currentCard)
-            //    SetCardToSlot(slotCurrent.currentCard, slotNext, 0.75f);
-            //else if(!slotPrev.currentCard)
-            //    SetCardToSlot(slotCurrent.currentCard, slotPrev, 0.75f);
-
-            //draggedCard.targetCardSlot = slotCurrent;
-
-            /************************************************************/
-
-            //if (lastVisitedSlotIndex > i && !slotNext.currentCard)
-            //{
-            //    SetCardToSlot(cardPrev, slotNext);
-
-            //    draggedCard.targetCardSlot = slotPrev;
-            //    lastVisitedSlot = slotPrev;
-            //}
-            //else if (lastVisitedSlotIndex < i && !slotPrev.currentCard)
-            //{
-            //    SetCardToSlot(cardNext, slotPrev);
-
-            //    draggedCard.targetCardSlot = slotNext;
-            //    lastVisitedSlot = slotNext;
-            //}
-
-            //lastVisitedSlotIndex = i;
-
-            #endregion
         }
     }
 

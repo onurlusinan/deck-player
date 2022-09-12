@@ -8,6 +8,10 @@ public class Overlay : MonoBehaviour
 {
     private Image overlay;
 
+    [Header("Overlay config")]
+    public float showDuration = 0.25f;
+    public float hideDuration = 0.25f;
+
     private void Awake()
     {
         overlay = GetComponent<Image>();
@@ -19,7 +23,7 @@ public class Overlay : MonoBehaviour
         if (show)
         {
             overlaySeq.AppendInterval(delay);
-            overlaySeq.Append(overlay.DOFade(1.0f, 0.5f)).OnComplete(() =>
+            overlaySeq.Append(overlay.DOFade(1.0f, showDuration)).OnComplete(() =>
             {
                 OnComplete?.Invoke();
             });
@@ -27,7 +31,7 @@ public class Overlay : MonoBehaviour
         else
         {
             overlaySeq.AppendInterval(delay);
-            overlaySeq.Append(overlay.DOFade(0.0f, 0.5f)).OnComplete(() =>
+            overlaySeq.Append(overlay.DOFade(0.0f, hideDuration)).OnComplete(() =>
             {
                 OnComplete?.Invoke();
             });

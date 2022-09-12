@@ -41,7 +41,7 @@ public class CardManager : MonoBehaviour
 
         Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
 
-        WaitForSeconds cardDrawDelay = new WaitForSeconds(0.2f);
+        WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
 
         int randomIndex;
 
@@ -60,7 +60,7 @@ public class CardManager : MonoBehaviour
             // draw animation
             RectTransform cardRect = newCard.GetComponent<RectTransform>();
             cardRect.anchoredPosition = initialCardOffset;
-            cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.5f).SetEase(Ease.OutExpo);
+            cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.25f).SetEase(Ease.OutExpo);
 
             yield return cardDrawDelay;
         }
@@ -79,4 +79,27 @@ public class CardManager : MonoBehaviour
         card.InitCard(cardData);
         return card;
     }
+
+    #region Sorting
+
+    public List<Card> OneTwoThreeSort()
+    {
+        // sort here
+        currentCards.Reverse();
+        return currentCards;
+    }
+    public List<Card> TripleSevenSort()
+    {
+        // sort here
+        currentCards.Reverse();
+        return currentCards;
+    }
+    public List<Card> SmartSort()
+    {
+        // sort here
+        currentCards.Reverse();
+        return currentCards;
+    }
+
+    #endregion
 }
