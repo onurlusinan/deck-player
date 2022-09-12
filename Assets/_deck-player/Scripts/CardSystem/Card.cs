@@ -46,11 +46,13 @@ namespace DeckPlayer.CardSystem
         private Canvas gameCanvas;
 
         public CardSlot currentSlot;
+        public CardSlot targetCardSlot;
 
         private void Awake()
         {
             cardRect = GetComponent<RectTransform>();
             gameCanvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
+            targetCardSlot = currentSlot;
         }
 
         /// <summary>
@@ -94,13 +96,19 @@ namespace DeckPlayer.CardSystem
             cardRect.anchoredPosition += eventData.delta / gameCanvas.scaleFactor;
             cardRect.DORotateQuaternion(Quaternion.identity, 0.2f);
 
+            //ClampToRect(DeckManager.Instance.cardDeck);
+
             DeckManager.Instance.draggingCard = true;
-            DeckManager.Instance.draggedCardX = cardRect.anchoredPosition.x;
+
+            DeckManager.Instance.draggedCard = this;
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
             cardRect.DOScale(1.3f, 0.2f);
+
+            currentSlot.currentCard = null;
+            DeckManager.Instance.lastVisitedSlot = currentSlot;
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -108,7 +116,24 @@ namespace DeckPlayer.CardSystem
             DeckManager.Instance.draggingCard = false;
 
             cardRect.DOScale(1.0f, 0.2f);
-            DeckManager.Instance.SetCardToSlot(this, currentSlot);
+
+            if (targetCardSlot == null)
+                targetCardSlot = currentSlot;
+
+            DeckManager.Instance.SetCardToSlot(this, targetCardSlot, 0.2f);
+        }
+
+        private void ClampToRect(RectTransform clampingParent)
+        {
+            Vector2 pos = cardRect.localPosition;
+
+            Vector2 minPosition = clampingParent.rect.min - cardRect.rect.min;
+            Vector2 maxPosition = clampingParent.rect.max - cardRect.rect.max;
+
+            pos.x = Mathf.Clamp(cardRect.localPosition.x, minPosition.x, maxPosition.x);
+            pos.y = Mathf.Clamp(cardRect.localPosition.y, minPosition.y, maxPosition.y);
+
+            cardRect.localPosition = pos;
         }
         #endregion
     }

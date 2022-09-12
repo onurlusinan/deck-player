@@ -40,12 +40,12 @@ namespace DeckPlayer.Managers
 
         public void EnableInput(bool enable)
         {
-            if(enable)
+            controlPanel.GetComponent<CanvasGroup>().interactable = enable;
+
+            if (enable)
                 controlPanel.DOAnchorPosY(100f, 0.5f).SetEase(Ease.OutExpo);
             else
-                controlPanel.DOAnchorPosY(-480f, 0.2f);
-
-            controlPanel.GetComponent<CanvasGroup>().interactable = enable;
+                controlPanel.DOAnchorPosY(-480f, 0.4f);
         }
 
         public void BackButton()
@@ -57,15 +57,15 @@ namespace DeckPlayer.Managers
 
         public void OneTwoThreeSortButton()
         {
-            
+            EnableInput(false);
         }
         public void TripleSevenSortButton()
-        { 
-            
+        {
+            EnableInput(false);
         }
         public void SmartSortButton()
-        { 
-            
+        {
+            EnableInput(false);
         }
 
         #endregion

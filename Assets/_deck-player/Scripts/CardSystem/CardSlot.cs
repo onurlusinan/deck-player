@@ -8,8 +8,7 @@ namespace DeckPlayer.CardSystem
     public class CardSlot : MonoBehaviour
     {
         private RectTransform slotRect;
-
-        internal float xPos;
+        public Card currentCard;
 
         private void Awake()
         {

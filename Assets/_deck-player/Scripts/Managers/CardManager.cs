@@ -48,12 +48,14 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < initialCardAmount; i++)
         {
             randomIndex = UnityEngine.Random.Range(0, collectionAmount);
-            GameObject newCard = CreateCard(collection[randomIndex]);
-            Transform cardSlot = DeckManager.Instance.GetCardSlot(i);
-            newCard.transform.SetParent(cardSlot, false);
+            Card newCard = CreateCard(collection[randomIndex]);
+            CardSlot cardSlot = DeckManager.Instance.GetCardSlot(i).GetComponent<CardSlot>();
+
+            newCard.transform.SetParent(cardSlot.transform, false);
 
             // set current card slot
-            newCard.GetComponent<Card>().currentSlot = cardSlot.GetComponent<CardSlot>();
+            newCard.currentSlot = cardSlot;
+            cardSlot.currentCard = newCard;
             
             // draw animation
             RectTransform cardRect = newCard.GetComponent<RectTransform>();
@@ -69,12 +71,12 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// Creates and initiates card from card data
     /// </summary>
-    private GameObject CreateCard(CardData cardData)
+    private Card CreateCard(CardData cardData)
     {
         GameObject cardObject = Instantiate(cardPrefab);
         Card card = cardObject.GetComponent<Card>();
         currentCards.Add(card);
         card.InitCard(cardData);
-        return cardObject;
+        return card;
     }
 }
