@@ -118,7 +118,6 @@ namespace DeckPlayer.Managers
 
                 // card's anchored X value
                 draggedCardX = draggedCard.GetComponent<RectTransform>().position.x;
-                Debug.Log("dragged Card X: " + draggedCardX);
 
                 // card slot's X value
                 slotCurrent = cardSlots[i].GetComponent<CardSlot>();
@@ -126,15 +125,11 @@ namespace DeckPlayer.Managers
 
                 Vector3[] slotWorldCorners = new Vector3[4];
                 slotCurrentRect.GetWorldCorners(slotWorldCorners);
-                float leftBorder = slotWorldCorners[1].x;
-                float rightBorder = slotWorldCorners[2].x;
-
-                Debug.Log("CardSlotIndex: " + i + " => Borders: " + leftBorder + "/" + rightBorder);
+                float leftBorder = slotWorldCorners[1].x; // top left
+                float rightBorder = slotWorldCorners[2].x; // top right
 
                 if (leftBorder < draggedCardX && draggedCardX < rightBorder) // between borders of a slot
                 {
-                    Debug.Log("Visiting slot " + i);
-
                     slotCurrent = cardSlots[i].GetComponent<CardSlot>();
 
                     if(i > 0)
@@ -142,16 +137,21 @@ namespace DeckPlayer.Managers
                     if(i < cardSlots.Count-1)
                         slotNext = cardSlots[i+1].GetComponent<CardSlot>();
 
-                    if (!slotNext?.currentCard && slotCurrent.currentCard)
+                    if(slotCurrent.currentCard)
                     {
-                        SetCardToSlot(slotCurrent.currentCard, slotNext, 0.2f);
-                    }
-                    else if (!slotPrev?.currentCard && slotCurrent.currentCard)
-                    {
-                        SetCardToSlot(slotCurrent.currentCard, slotPrev, 0.2f);
-                    }
-                    else 
-                        return;
+                        if (!slotNext?.currentCard)
+                        {
+                            SetCardToSlot(slotCurrent.currentCard, slotNext, 0.2f, true);
+                        }
+                        if(!slotPrev?.currentCard)
+                        {
+                            SetCardToSlot(slotCurrent.currentCard, slotPrev, 0.2f, true);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }   
 
                     slotCurrent.currentCard = null;
                     draggedCard.targetCardSlot = slotCurrent;
