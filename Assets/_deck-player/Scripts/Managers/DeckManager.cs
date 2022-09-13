@@ -82,12 +82,14 @@ namespace DeckPlayer.Managers
 
         private void MoveCardToSlot(Card card, CardSlot cardSlot, float duration)
         {
-            RectTransform cardRect = card.GetComponent<RectTransform>();
-            RectTransform slotRect = cardSlot.GetComponent<RectTransform>();
+            Transform cardTansform = card.transform;
 
-            cardRect.SetParent(slotRect, false);
-            cardRect.DOAnchorPos(Vector3.zero, duration);
-            cardRect.DOLocalRotateQuaternion(Quaternion.identity, 0.2f);
+            cardTansform.DOMove(cardSlot.transform.position, duration).OnComplete(() =>
+            {
+                cardTansform.SetParent(cardSlot.transform, false);
+                cardTansform.localPosition = Vector3.zero;
+                cardTansform.localRotation = Quaternion.identity;
+            });   
         }
 
         public void SetCardToSlot(Card card, CardSlot cardSlot, float duration, bool isSortMode = false)
