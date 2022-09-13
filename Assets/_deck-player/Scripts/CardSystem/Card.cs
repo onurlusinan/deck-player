@@ -123,6 +123,7 @@ namespace DeckPlayer.CardSystem
                 targetCardSlot = currentSlot;
 
             DeckManager.Instance.SetCardToSlot(this, targetCardSlot, 0.2f);
+            DeckManager.Instance.draggedCard = null;
         }
 
         private void ClampToRect(RectTransform clampingParent)

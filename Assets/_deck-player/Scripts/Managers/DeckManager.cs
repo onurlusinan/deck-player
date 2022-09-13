@@ -65,7 +65,7 @@ namespace DeckPlayer.Managers
 
             for(int i = 0; i < cardSlots.Count; i++)
             {
-                RectTransform card = cardSlots[i].GetComponent<CardSlot>().currentCard.GetComponent<RectTransform>(); ;
+                RectTransform card = cardSlots[i].GetComponent<CardSlot>().currentCard.GetComponent<RectTransform>();
                 card.DOAnchorPosY(card.anchoredPosition.y + 300f, 0.25f);
             }
 
@@ -137,18 +137,21 @@ namespace DeckPlayer.Managers
 
                     slotCurrent = cardSlots[i].GetComponent<CardSlot>();
 
-                    slotPrev = cardSlots[i-1]?.GetComponent<CardSlot>();
-                    slotNext = cardSlots[i+1]?.GetComponent<CardSlot>();
+                    if(i > 0)
+                        slotPrev = cardSlots[i-1].GetComponent<CardSlot>();
+                    if(i < cardSlots.Count-1)
+                        slotNext = cardSlots[i+1].GetComponent<CardSlot>();
 
                     if (!slotNext?.currentCard && slotCurrent.currentCard)
                     {
                         SetCardToSlot(slotCurrent.currentCard, slotNext, 0.2f);
                     }
-
-                    if (!slotPrev?.currentCard && slotCurrent.currentCard)
+                    else if (!slotPrev?.currentCard && slotCurrent.currentCard)
                     {
                         SetCardToSlot(slotCurrent.currentCard, slotPrev, 0.2f);
                     }
+                    else 
+                        return;
 
                     slotCurrent.currentCard = null;
                     draggedCard.targetCardSlot = slotCurrent;
