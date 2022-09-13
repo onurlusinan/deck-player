@@ -13,7 +13,7 @@ namespace DeckPlayer.Managers
         public static DeckManager Instance;
 
         public RectTransform cardDeck;
-        public float sortCardDelay = 0.5f;
+        public float sortCardDelay = 0.1f;
 
         [HideInInspector]
         public bool draggingCard = false;
@@ -73,7 +73,7 @@ namespace DeckPlayer.Managers
 
             for(int i = 0; i < sortedList.Count; i++)
             {
-                SetCardToSlot(sortedList[i], cardSlots[i].GetComponent<CardSlot>(), 0.5f, true);
+                SetCardToSlot(sortedList[i], cardSlots[i].GetComponent<CardSlot>(), 0.25f, true);
                 yield return sortDelay;
             }
                 
@@ -84,11 +84,12 @@ namespace DeckPlayer.Managers
         {
             Transform cardTansform = card.transform;
 
+            cardTansform.SetParent(cardSlot.transform, true);
+            cardTansform.DOLocalRotateQuaternion(Quaternion.identity, 0.2f);
+
             cardTansform.DOMove(cardSlot.transform.position, duration).OnComplete(() =>
             {
-                cardTansform.SetParent(cardSlot.transform, false);
                 cardTansform.localPosition = Vector3.zero;
-                cardTansform.localRotation = Quaternion.identity;
             });   
         }
 
