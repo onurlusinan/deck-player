@@ -137,27 +137,31 @@ namespace DeckPlayer.Managers
 
                     slotCurrent = cardSlots[i].GetComponent<CardSlot>();
 
-                    if(i > 0)
-                        slotPrev = cardSlots[i-1].GetComponent<CardSlot>();
-                    if(i < cardSlots.Count-1)
-                        slotNext = cardSlots[i+1].GetComponent<CardSlot>();
+                    if (i > 0)
+                        slotPrev = cardSlots[i - 1].GetComponent<CardSlot>();
+                    if (i < cardSlots.Count - 1)
+                        slotNext = cardSlots[i + 1].GetComponent<CardSlot>();
 
-                    if (!slotNext?.currentCard && slotCurrent.currentCard)
+                    if (!slotPrev?.currentCard && slotCurrent.currentCard)
                     {
-                        SetCardToSlot(slotCurrent.currentCard, slotNext, 0.2f);
-                    }
-                    else if (!slotPrev?.currentCard && slotCurrent.currentCard)
-                    {
+                        Debug.Log("HOOP: 1");
                         SetCardToSlot(slotCurrent.currentCard, slotPrev, 0.2f);
-                    }
-                    else 
+                        slotCurrent.currentCard = null;
+                        draggedCard.targetCardSlot = slotCurrent;
                         return;
-
-                    slotCurrent.currentCard = null;
-                    draggedCard.targetCardSlot = slotCurrent;
+                    }
+                    else if (!slotNext?.currentCard && slotCurrent.currentCard)
+                    {
+                        Debug.Log("HOOP: 2");
+                        SetCardToSlot(slotCurrent.currentCard, slotNext, 0.2f);
+                        slotCurrent.currentCard = null;
+                        draggedCard.targetCardSlot = slotCurrent;
+                        return;
+                    }
+                    else
+                        return;
                 }
             }
         }
     }
-
 }
