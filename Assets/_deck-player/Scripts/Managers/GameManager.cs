@@ -16,7 +16,7 @@ namespace DeckPlayer.Managers
         public RectTransform cardDeck;
         public RectTransform controlPanel;
 
-        public bool globalInput = true;
+        public bool deckInput = false;
 
         private void Awake()
         {
@@ -44,13 +44,16 @@ namespace DeckPlayer.Managers
 
         public void EnableInput(bool enable)
         {
-            globalInput = enable;
             controlPanel.GetComponent<CanvasGroup>().interactable = enable;
 
             if (enable)
-                controlPanel.DOAnchorPosY(100f, 0.3f).SetEase(Ease.OutExpo);
+                controlPanel.DOAnchorPosY(100f, 0.3f).SetEase(Ease.OutExpo).OnComplete(() =>
+                            deckInput = enable
+                );
             else
-                controlPanel.DOAnchorPosY(-480f, 0.3f);
+                controlPanel.DOAnchorPosY(-480f, 0.3f).OnComplete(() =>
+                            deckInput = enable
+                );
         }
 
         public void BackButton()
@@ -88,11 +91,11 @@ namespace DeckPlayer.Managers
         {
             EnableInput(false);
 
-            StartCoroutine(
-                DeckManager.Instance.SortCardsFromList(
-                    CardManager.Instance.SmartSort()
-                    )
-                );
+            //StartCoroutine(
+            //    DeckManager.Instance.SortCardsFromList(
+            //        CardManager.Instance.SmartSort()
+            //        )
+            //    );
         }
 
         #endregion

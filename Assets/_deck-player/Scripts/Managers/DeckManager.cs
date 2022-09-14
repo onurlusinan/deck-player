@@ -28,6 +28,9 @@ namespace DeckPlayer.Managers
         private CardSlot slotPrev;
         private CardSlot slotNext;
 
+        WaitForSeconds sortDelay;
+        WaitForSeconds sortedGroupsDelay;
+
         private void Awake()
         {
             if (Instance == null)
@@ -38,6 +41,8 @@ namespace DeckPlayer.Managers
             cardSlots = new List<RectTransform>();
 
             PrepareDeck();
+            sortDelay = new WaitForSeconds(sortCardDelay);
+            sortedGroupsDelay = new WaitForSeconds(sortCardDelay * 2);
         }
 
         private void Update()
@@ -57,10 +62,8 @@ namespace DeckPlayer.Managers
             return cardSlots[index];
         }
 
-        public IEnumerator SortCardsFromList(List<Card> sortedList)
+        public IEnumerator SortCardsFromList(Tuple<List<List<Card>>, List<Card>> listsTuple)
         {
-            WaitForSeconds sortDelay = new WaitForSeconds(sortCardDelay);
-
             for(int i = 0; i < cardSlots.Count; i++)
             {
                 RectTransform card = cardSlots[i].GetComponent<CardSlot>().currentCard.GetComponent<RectTransform>();
@@ -69,9 +72,22 @@ namespace DeckPlayer.Managers
 
             yield return null;
 
-            for(int i = 0; i < sortedList.Count; i++)
+            int slottedCards = 0;
+
+            foreach(List<Card> list in listsTuple.Item1)
             {
-                SetCardToSlot(sortedList[i], cardSlots[i].GetComponent<CardSlot>(), 0.25f, true);
+                for(int i = 0; i < list.Count; i++)
+                {
+                    SetCardToSlot(list[i], cardSlots[slottedCards].GetComponent<CardSlot>(), 0.25f, true);
+                    slottedCards++;
+                    yield return sortDelay;
+                }
+                //yield return sortedGroupsDelay;
+            }
+
+            for(int i = 0; i < listsTuple.Item2.Count; i++)
+            {
+                SetCardToSlot(listsTuple.Item2[i], cardSlots[i + slottedCards].GetComponent<CardSlot>(), 0.25f, true);
                 yield return sortDelay;
             }
                 

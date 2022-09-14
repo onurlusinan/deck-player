@@ -93,10 +93,11 @@ namespace DeckPlayer.CardSystem
         #region drag-drop
         public void OnDrag(PointerEventData eventData)
         {
+            if (!GameManager.Instance.deckInput) 
+                return;
+
             cardRect.anchoredPosition += eventData.delta / gameCanvas.scaleFactor;
             cardRect.DORotateQuaternion(Quaternion.identity, 0.2f);
-
-            //ClampToRect(DeckManager.Instance.cardDeck);
 
             DeckManager.Instance.draggingCard = true;
             DeckManager.Instance.draggedCard = this;
@@ -104,11 +105,12 @@ namespace DeckPlayer.CardSystem
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (!GameManager.Instance.globalInput) // TODO: Doesnt work
+            if (!GameManager.Instance.deckInput) 
                 return;
 
             cardRect.DOScale(1.3f, 0.2f);
 
+            // in order to appear in the very front
             transform.SetParent(DeckManager.Instance.cardDeck);
             transform.SetAsLastSibling();
 

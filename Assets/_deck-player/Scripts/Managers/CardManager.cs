@@ -184,7 +184,7 @@ public class CardManager : MonoBehaviour
         return Tuple.Create(result, leftovers);
     }
 
-    public List<Card> OneTwoThreeSort()
+    public Tuple<List<List<Card>>, List<Card>> OneTwoThreeSort()
     {
         List<Card> sortedResult = new List<Card>();
         List<Card> leftovers = new List<Card>();
@@ -230,35 +230,45 @@ public class CardManager : MonoBehaviour
         }
 
         Tuple<List<Card>, List<Card>> resultTuple;
+        List<List<Card>> sortedLists = new List<List<Card>>();
 
         resultTuple = FindConsecutiveCards(spades);
-        sortedResult.AddRange(resultTuple.Item1);
+        sortedLists.Add(resultTuple.Item1);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(diamonds);
-        sortedResult.AddRange(resultTuple.Item1);
+        sortedLists.Add(resultTuple.Item1);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(hearts);
-        sortedResult.AddRange(resultTuple.Item1);
+        sortedLists.Add(resultTuple.Item1);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(clubs);
-        sortedResult.AddRange(resultTuple.Item1);
+        sortedLists.Add(resultTuple.Item1);
         leftovers.AddRange(resultTuple.Item2);
 
-        sortedResult.AddRange(leftovers);
-
-        return sortedResult;
+        return Tuple.Create(sortedLists, leftovers);
     }
-    public List<Card> TripleSevenSort()
+    public Tuple<List<List<Card>>, List<Card>> TripleSevenSort()
     {
+        List<List<Card>> sortedResultGroups = new List<List<Card>>();
+        List<Card> leftovers = new List<Card>();
+
         // group same numbers
+        IEnumerable<IGrouping<int, Card>> groups = currentCards.GroupBy(card => card.GetValue());
+        IEnumerable<List<Card>> valueGroups = groups.Select(x => x.ToList()).Distinct().ToList();
+        
         // get one from each symbol (3 OR 4)
-        // group those again
-        // leave the rest
-        currentCards.Reverse();
-        return currentCards;
+        foreach(List<Card> valueGroup in valueGroups)
+        {
+            if (valueGroup.Count < 3 || valueGroup.Count > 4)
+                leftovers.AddRange(valueGroup);
+            else
+                sortedResultGroups.Add(valueGroup);
+        }
+
+        return Tuple.Create(sortedResultGroups, leftovers);
     }
     public List<Card> SmartSort()
     {
