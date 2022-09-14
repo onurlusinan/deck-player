@@ -57,13 +57,17 @@ namespace DeckPlayer.Managers
         {
             overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.menu));
         }
+        public void RestartButton()
+        {
+            overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.game));
+        }
 
         #region Sort-Buttons
 
         public void OneTwoThreeSortButton()
         {
             EnableInput(false);
-            
+
             StartCoroutine(
                 DeckManager.Instance.SortCardsFromList(
                     CardManager.Instance.OneTwoThreeSort()

@@ -43,9 +43,7 @@ namespace DeckPlayer.Managers
         private void Update()
         {
             if(draggingCard && !settingCard)
-            {
                 ArrangeDeckPositions();
-            }
         }
 
         public void PrepareDeck()
@@ -118,23 +116,19 @@ namespace DeckPlayer.Managers
 
                 // card's anchored X value
                 draggedCardX = draggedCard.GetComponent<RectTransform>().position.x;
-                Debug.Log("dragged Card X: " + draggedCardX);
 
                 // card slot's X value
                 slotCurrent = cardSlots[i].GetComponent<CardSlot>();
                 RectTransform slotCurrentRect = slotCurrent.GetComponent<RectTransform>();
 
+                // get world corners of the slot rect
                 Vector3[] slotWorldCorners = new Vector3[4];
                 slotCurrentRect.GetWorldCorners(slotWorldCorners);
                 float leftBorder = slotWorldCorners[1].x;
                 float rightBorder = slotWorldCorners[2].x;
 
-                Debug.Log("CardSlotIndex: " + i + " => Borders: " + leftBorder + "/" + rightBorder);
-
                 if (leftBorder < draggedCardX && draggedCardX < rightBorder) // between borders of a slot
                 {
-                    Debug.Log("Visiting slot " + i);
-
                     slotCurrent = cardSlots[i].GetComponent<CardSlot>();
 
                     if (i > 0)
@@ -144,7 +138,6 @@ namespace DeckPlayer.Managers
 
                     if (!slotPrev?.currentCard && slotCurrent.currentCard)
                     {
-                        Debug.Log("HOOP: 1");
                         SetCardToSlot(slotCurrent.currentCard, slotPrev, 0.2f);
                         slotCurrent.currentCard = null;
                         draggedCard.targetCardSlot = slotCurrent;
@@ -152,7 +145,6 @@ namespace DeckPlayer.Managers
                     }
                     else if (!slotNext?.currentCard && slotCurrent.currentCard)
                     {
-                        Debug.Log("HOOP: 2");
                         SetCardToSlot(slotCurrent.currentCard, slotNext, 0.2f);
                         slotCurrent.currentCard = null;
                         draggedCard.targetCardSlot = slotCurrent;

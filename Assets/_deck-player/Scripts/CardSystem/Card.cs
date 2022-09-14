@@ -99,7 +99,6 @@ namespace DeckPlayer.CardSystem
             //ClampToRect(DeckManager.Instance.cardDeck);
 
             DeckManager.Instance.draggingCard = true;
-
             DeckManager.Instance.draggedCard = this;
         }
 
@@ -109,6 +108,9 @@ namespace DeckPlayer.CardSystem
                 return;
 
             cardRect.DOScale(1.3f, 0.2f);
+
+            transform.SetParent(DeckManager.Instance.cardDeck);
+            transform.SetAsLastSibling();
 
             currentSlot.currentCard = null;
         }
