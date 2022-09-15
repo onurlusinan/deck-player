@@ -141,47 +141,108 @@ public class CardManager : MonoBehaviour
     /// </summary>
     /// <param name="sortedCardList"> Has to be sorted </param>
     /// <returns> Tuple of the result and leftovers </returns>
-    private Tuple<List<Card>, List<Card>> FindConsecutiveCards(List<Card> sortedCardList)
+    private Tuple<List<List<Card>>, List<Card>> FindConsecutiveCards(List<Card> sortedCardList)
     {
-        List<Card> result = new List<Card>();
+        List<List<Card>> consecutiveLists = sortedCardList.Select((item, idx) => new { I = item, G = item.GetValue() - idx })
+                                                          .Distinct()
+                                                          .GroupBy( ig => ig.G,
+                                                                    ig => ig.I,
+                                                                    (k, g) => g.ToList()).ToList();
+        List<List<Card>> resultLists = new List<List<Card>>();
         List<Card> leftovers = new List<Card>();
 
-        if (sortedCardList.Count == 0)
-            return Tuple.Create(result, leftovers);
-        else if(sortedCardList.Count == 1)
+        for (int i = 0; i < consecutiveLists.Count; i++)
         {
-            leftovers.Add(sortedCardList[0]);
-            return Tuple.Create(result, leftovers);
-        }    
-
-        for (int i = 1; i < sortedCardList.Count; i++)
-        {
-            int valueCurrent = sortedCardList[i].GetValue();
-            int valuePrev = sortedCardList[i - 1].GetValue();
-
-            if (valueCurrent - valuePrev == 1)
+            if (consecutiveLists[i].Count >= 3)
             {
-                if (i == 1)
-                    result.Add(sortedCardList[i - 1]);
-
-                result.Add(sortedCardList[i]);
+                resultLists.Add(consecutiveLists[i]);
             }
             else
-            {
-                if (i == 1)
-                    leftovers.Add(sortedCardList[i - 1]);
-
-                leftovers.Add(sortedCardList[i]);
-            }
-        }
-        
-        if(result.Count < 3) // 3 or more check
-        {
-            leftovers.AddRange(result);
-            result.Clear();
+                leftovers.AddRange(consecutiveLists[i]);
         }
 
-        return Tuple.Create(result, leftovers);
+        return Tuple.Create(resultLists, leftovers);
+
+        #region old Algo
+        //List<List<Card>> result = new List<List<Card>>();
+        //List<Card> leftovers = new List<Card>();
+
+        //if (sortedCardList.Count == 0)
+        //    return Tuple.Create(result, leftovers);
+        //else if(sortedCardList.Count > 0 && sortedCardList.Count < 3)
+        //{
+        //    foreach(Card card in sortedCardList)
+        //        leftovers.Add(card);    
+        //    return Tuple.Create(result, leftovers);
+        //}
+        //else
+        //{
+        //    int firstValue;
+        //    int secondValue;
+        //    int thirdValue;
+        //    int skipLoop = 0;
+
+        //    for (int i = 0; i < sortedCardList.Count; i++)
+        //    {
+        //        if(i == sortedCardList.Count - 1)
+        //        {
+        //            leftovers.Add(sortedCardList[i]);
+        //            return Tuple.Create(result, leftovers);
+        //        }
+        //        else if(i == sortedCardList.Count - 2)
+        //        {
+        //            leftovers.Add(sortedCardList[i]);
+        //            leftovers.Add(sortedCardList[i + 1]);
+        //            return Tuple.Create(result, leftovers);
+        //        }
+        //        else
+        //        {
+        //            if (skipLoop != 0)
+        //            {
+        //                if (skipLoop <= 3)
+        //                {
+        //                    skipLoop++;
+        //                    continue;
+        //                }
+        //                else
+        //                    skipLoop = 0;
+        //            }
+
+        //            // Check if this is a consecutive trio
+        //            firstValue = sortedCardList[i].GetValue();
+        //            secondValue = sortedCardList[i + 1].GetValue();
+        //            thirdValue = sortedCardList[i + 2].GetValue();
+
+        //            if (secondValue - firstValue == 1 && thirdValue - secondValue == 1)
+        //            {
+        //                // a consecutive trio!
+        //                List<Card> tempList = new List<Card>();
+        //                tempList.Add(sortedCardList[i]);
+        //                tempList.Add(sortedCardList[i + 1]);
+        //                tempList.Add(sortedCardList[i + 2]);
+
+        //                for (int j = 0; j < sortedCardList.Count - (i + 3); j++)
+        //                {
+        //                    if (sortedCardList[(i + 2) + (j + 1)].GetValue() - sortedCardList[(i + 2) + j].GetValue() == 1)
+        //                    {
+        //                        tempList.Add(sortedCardList[(i + 2) + j]);
+        //                    }
+        //                    else
+        //                        skipLoop = 1;
+
+        //                    result.Add(tempList);
+        //                    break;
+        //                }
+        //            }
+        //            else
+        //                leftovers.Add(sortedCardList[i]);
+        //        }
+
+        //    }
+
+        //    return Tuple.Create(result, leftovers);
+        //}
+        #endregion
     }
 
     public Tuple<List<List<Card>>, List<Card>> OneTwoThreeSort()
@@ -229,27 +290,31 @@ public class CardManager : MonoBehaviour
             Debug.Log("clubs: " + x.ToString());
         }
 
-        Tuple<List<Card>, List<Card>> resultTuple;
+        Tuple<List<List<Card>>, List<Card>> resultTuple;
         List<List<Card>> sortedLists = new List<List<Card>>();
 
         resultTuple = FindConsecutiveCards(spades);
         if(resultTuple.Item1.Count > 0)
-            sortedLists.Add(resultTuple.Item1);
+            foreach(List<Card> sortedList in resultTuple.Item1)
+                sortedLists.Add(sortedList);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(diamonds);
         if (resultTuple.Item1.Count > 0)
-            sortedLists.Add(resultTuple.Item1);
+            foreach (List<Card> sortedList in resultTuple.Item1)
+                sortedLists.Add(sortedList);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(hearts);
         if (resultTuple.Item1.Count > 0)
-            sortedLists.Add(resultTuple.Item1);
+            foreach (List<Card> sortedList in resultTuple.Item1)
+                sortedLists.Add(sortedList);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(clubs);
         if (resultTuple.Item1.Count > 0)
-            sortedLists.Add(resultTuple.Item1);
+            foreach (List<Card> sortedList in resultTuple.Item1)
+                sortedLists.Add(sortedList);
         leftovers.AddRange(resultTuple.Item2);
 
         return Tuple.Create(sortedLists, leftovers);

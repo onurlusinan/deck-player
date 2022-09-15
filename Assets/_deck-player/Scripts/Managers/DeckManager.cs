@@ -81,7 +81,7 @@ namespace DeckPlayer.Managers
                     {
                         Card card = sortedGroups[i][j];
 
-                        SetCardToSlot(card, cardSlots[slottedCards].GetComponent<CardSlot>(), 0.25f, true, i+1);
+                        SetCardToSlot(card, cardSlots[slottedCards].GetComponent<CardSlot>(), 0.25f, true, (i+1)/2f);
                         slottedCards++;
 
                         yield return sortDelay;
