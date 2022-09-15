@@ -233,19 +233,23 @@ public class CardManager : MonoBehaviour
         List<List<Card>> sortedLists = new List<List<Card>>();
 
         resultTuple = FindConsecutiveCards(spades);
-        sortedLists.Add(resultTuple.Item1);
+        if(resultTuple.Item1.Count > 0)
+            sortedLists.Add(resultTuple.Item1);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(diamonds);
-        sortedLists.Add(resultTuple.Item1);
+        if (resultTuple.Item1.Count > 0)
+            sortedLists.Add(resultTuple.Item1);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(hearts);
-        sortedLists.Add(resultTuple.Item1);
+        if (resultTuple.Item1.Count > 0)
+            sortedLists.Add(resultTuple.Item1);
         leftovers.AddRange(resultTuple.Item2);
 
         resultTuple = FindConsecutiveCards(clubs);
-        sortedLists.Add(resultTuple.Item1);
+        if (resultTuple.Item1.Count > 0)
+            sortedLists.Add(resultTuple.Item1);
         leftovers.AddRange(resultTuple.Item2);
 
         return Tuple.Create(sortedLists, leftovers);

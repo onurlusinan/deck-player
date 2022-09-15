@@ -29,7 +29,6 @@ namespace DeckPlayer.Managers
         private CardSlot slotNext;
 
         WaitForSeconds sortDelay;
-        WaitForSeconds sortedGroupsDelay;
 
         private void Awake()
         {
@@ -42,7 +41,6 @@ namespace DeckPlayer.Managers
 
             PrepareDeck();
             sortDelay = new WaitForSeconds(sortCardDelay);
-            sortedGroupsDelay = new WaitForSeconds(sortCardDelay * 2);
         }
 
         private void Update()
@@ -72,42 +70,37 @@ namespace DeckPlayer.Managers
 
             yield return null;
 
+            List<List<Card>> sortedGroups = listsTuple.Item1;
             int slottedCards = 0;
 
-            foreach(List<Card> list in listsTuple.Item1)
+            if(sortedGroups.Count > 0) // sorted groups, if there are any
             {
-                for(int i = 0; i < list.Count; i++)
+                for (int i = 0; i < sortedGroups.Count; i++)
                 {
-                    SetCardToSlot(list[i], cardSlots[slottedCards].GetComponent<CardSlot>(), 0.25f, true);
-                    slottedCards++;
-                    yield return sortDelay;
+                    for(int j = 0; j < sortedGroups[i].Count; j++)
+                    {
+                        Card card = sortedGroups[i][j];
+
+                        SetCardToSlot(card, cardSlots[slottedCards].GetComponent<CardSlot>(), 0.25f, true, i+1);
+                        slottedCards++;
+
+                        yield return sortDelay;
+                    }
                 }
-                //yield return sortedGroupsDelay;
             }
 
-            for(int i = 0; i < listsTuple.Item2.Count; i++)
+            List<Card> leftOvers = listsTuple.Item2;
+
+            for (int i = 0; i < leftOvers.Count; i++) // leftovers
             {
-                SetCardToSlot(listsTuple.Item2[i], cardSlots[i + slottedCards].GetComponent<CardSlot>(), 0.25f, true);
+                SetCardToSlot(leftOvers[i], cardSlots[i + slottedCards].GetComponent<CardSlot>(), 0.25f, true);
                 yield return sortDelay;
             }
                 
             GameManager.Instance.EnableInput(true);
         }
 
-        private void MoveCardToSlot(Card card, CardSlot cardSlot, float duration)
-        {
-            Transform cardTansform = card.transform;
-
-            cardTansform.SetParent(cardSlot.transform, true);
-            cardTansform.DOLocalRotateQuaternion(Quaternion.identity, 0.2f);
-
-            cardTansform.DOMove(cardSlot.transform.position, duration).OnComplete(() =>
-            {
-                cardTansform.localPosition = Vector3.zero;
-            });   
-        }
-
-        public void SetCardToSlot(Card card, CardSlot cardSlot, float duration, bool isSortMode = false)
+        public void SetCardToSlot(Card card, CardSlot cardSlot, float duration, bool isSortMode = false, float sortGroupHeight = 0)
         {
             if (cardSlot.currentCard && !isSortMode)
                 return;
@@ -118,7 +111,21 @@ namespace DeckPlayer.Managers
             card.targetCardSlot = null;
             cardSlot.currentCard = card;
 
-            MoveCardToSlot(card, cardSlot, duration);
+            card.transform.SetParent(cardSlot.transform, true);
+            card.transform.DOLocalRotateQuaternion(Quaternion.identity, 0.2f);
+
+            if (sortGroupHeight > 0f)
+            {
+                card.transform.DOMove(new Vector3(cardSlot.transform.position.x, sortGroupHeight, cardSlot.transform.position.z), duration);
+
+                //Sequence groupCardSequence = DOTween.Sequence();
+                //groupCardSequence.Append(card.transform.DOMove(cardSlot.transform.position, duration))
+                //                 .Append(card.transform.DOMoveY(sortGroupHeight, 0.2f));
+            }
+            else
+                card.transform.DOMove(cardSlot.transform.position, duration).OnComplete(() =>
+                                card.transform.localPosition = Vector3.zero
+                );
 
             settingCard = false;
         }
