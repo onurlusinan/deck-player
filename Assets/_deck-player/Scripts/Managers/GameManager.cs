@@ -96,11 +96,11 @@ namespace DeckPlayer.Managers
         {
             EnableInput(false);
 
-            //StartCoroutine(
-            //    DeckManager.Instance.SortCardsFromList(
-            //        CardManager.Instance.SmartSort()
-            //        )
-            //    );
+            StartCoroutine(
+                DeckManager.Instance.SortCardsFromList(
+                    CardManager.Instance.SmartSort()
+                    )
+                );
         }
 
         #endregion

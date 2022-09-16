@@ -269,7 +269,7 @@ public class CardManager : MonoBehaviour
         #endregion
     }
 
-    public Tuple<List<List<Card>>, List<Card>> OneTwoThreeSort()
+    public Tuple<List<List<Card>>, List<Card>> OneTwoThreeSort(List<Card> listOfCards = null)
     {
         List<Card> sortedResult = new List<Card>();
         List<Card> leftovers = new List<Card>();
@@ -280,18 +280,21 @@ public class CardManager : MonoBehaviour
         List<Card> hearts = new List<Card>();
         List<Card> clubs = new List<Card>();
 
-        for(int i = 0; i < currentCards.Count; i++)
+        if (listOfCards == null)
+            listOfCards = currentCards;
+
+        for(int i = 0; i < listOfCards.Count; i++)
         {
-            CardSuit currentSuit = currentCards[i].GetSuit();
+            CardSuit currentSuit = listOfCards[i].GetSuit();
 
             if (currentSuit == CardSuit.spades)
-                spades.Add(currentCards[i]);
+                spades.Add(listOfCards[i]);
             else if (currentSuit == CardSuit.diamonds)
-                diamonds.Add(currentCards[i]);
+                diamonds.Add(listOfCards[i]);
             else if (currentSuit == CardSuit.hearts)
-                hearts.Add(currentCards[i]);
+                hearts.Add(listOfCards[i]);
             else if (currentSuit == CardSuit.clubs)
-                clubs.Add(currentCards[i]);
+                clubs.Add(listOfCards[i]);
         }
 
         // find consecutive numbers in groups (3 OR MORE)
@@ -343,14 +346,15 @@ public class CardManager : MonoBehaviour
 
         return Tuple.Create(sortedLists, leftovers);
     }
-    public Tuple<List<List<Card>>, List<Card>> TripleSevenSort()
+    public Tuple<List<List<Card>>, List<Card>> TripleSevenSort(List<Card> listOfCards = null)
     {
         List<List<Card>> sortedResultGroups = new List<List<Card>>();
         List<Card> leftovers = new List<Card>();
 
-        List<Card> tempList = currentCards; // remove the 
-        //leftovers.AddRange(tempList.Single(card => card.GetCardType() != CardType.numbered));
-        //tempList.Remove();
+        if (listOfCards == null)
+            listOfCards = currentCards;
+
+        List<Card> tempList = listOfCards;
 
         // group same numbers
         IEnumerable<List<Card>> sameNumberCardGroups = tempList.GroupBy(card => card.GetValue()).Select(group => group.ToList()).ToList();
@@ -374,13 +378,39 @@ public class CardManager : MonoBehaviour
         return Tuple.Create(sortedResultGroups, leftovers);
     }
 
-    public List<Card> SmartSort()
+    public Tuple<List<List<Card>>, List<Card>> SmartSort(List<Card> listOfCards = null)
     {
-        Tuple<List<List<Card>>, List<Card>> oneTwoThreeSort = OneTwoThreeSort();
-        Tuple<List<List<Card>>, List<Card>> tripleSevenSort = TripleSevenSort();
+        if (listOfCards == null)
+            listOfCards = currentCards;
 
-        
-        return currentCards;
+        // First do a 1-2-3 sort, and 7-7-7 for it's leftovers
+        Tuple<List<List<Card>>, List<Card>> oneTwoThreeSort = OneTwoThreeSort(listOfCards);
+        List<List<Card>> oneTwoThreeValues = oneTwoThreeSort.Item1; 
+        List<Card> oneTwoThreeLeftovers = oneTwoThreeSort.Item2;
+        Tuple<List<List<Card>>, List<Card>> extraTripleSeven = TripleSevenSort(oneTwoThreeLeftovers);
+        oneTwoThreeValues.Union(extraTripleSeven.Item1);
+        List<Card> extraTripleSevenLeftovers = extraTripleSeven.Item2;
+
+        // Then do a 7-7-7 sort, and 1-2-3 for it's leftovers
+        Tuple<List<List<Card>>, List<Card>> tripleSevenSort = OneTwoThreeSort(listOfCards);
+        List<List<Card>> tripleSevenValues = tripleSevenSort.Item1;
+        List<Card> tripleSevenLeftovers = tripleSevenSort.Item2;
+        Tuple<List<List<Card>>, List<Card>> extraOneTwoThree = TripleSevenSort(tripleSevenLeftovers);
+        tripleSevenValues.Union(extraOneTwoThree.Item1);
+        List<Card> extraOneTwoThreeLeftovers = extraOneTwoThree.Item2;
+
+        // check which leftover sum is greater and return its respective list of cards
+        int firstLeftoverSum = 0;
+        int secondLeftoverSum = 0;
+        foreach(Card card in extraTripleSevenLeftovers)
+            firstLeftoverSum = firstLeftoverSum + card.GetValue();
+        foreach (Card card in extraOneTwoThreeLeftovers)
+            secondLeftoverSum = secondLeftoverSum + card.GetValue();
+
+        if(firstLeftoverSum > secondLeftoverSum)
+            return Tuple.Create(oneTwoThreeValues, extraTripleSevenLeftovers);
+        else
+            return Tuple.Create(tripleSevenValues, extraOneTwoThreeLeftovers);
     }
 
     #endregion
