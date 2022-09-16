@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Clubs 9
   m_EditorClassIdentifier: 
   value: 9
-  cardSymbol: 3
+  cardSuit: 3
   cardType: 0
   iconSprite: {fileID: -1326342898, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
   imageSprite: {fileID: -1326342898, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}

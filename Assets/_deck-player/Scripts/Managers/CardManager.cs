@@ -108,6 +108,16 @@ public class CardManager : MonoBehaviour
     }
     #endregion
 
+    #region CARD-THEMES
+
+    public void ChangeCardsTheme(CardTheme theme)
+    {
+        foreach (Card card in currentCards)
+            card.ChangeCardTheme(theme);
+    }
+
+    #endregion
+
     #region SORTING
 
     // Function to find consecutive ranges
@@ -250,7 +260,7 @@ public class CardManager : MonoBehaviour
         List<Card> sortedResult = new List<Card>();
         List<Card> leftovers = new List<Card>();
 
-        // group same symbols
+        // group same card suits
         List<Card> spades = new List<Card>();
         List<Card> diamonds = new List<Card>();
         List<Card> hearts = new List<Card>();
@@ -258,15 +268,15 @@ public class CardManager : MonoBehaviour
 
         for(int i = 0; i < currentCards.Count; i++)
         {
-            CardSymbol currentSymbol = currentCards[i].GetSymbol();
+            CardSuit currentSuit = currentCards[i].GetSuit();
 
-            if (currentSymbol == CardSymbol.spades)
+            if (currentSuit == CardSuit.spades)
                 spades.Add(currentCards[i]);
-            else if (currentSymbol == CardSymbol.diamonds)
+            else if (currentSuit == CardSuit.diamonds)
                 diamonds.Add(currentCards[i]);
-            else if (currentSymbol == CardSymbol.hearts)
+            else if (currentSuit == CardSuit.hearts)
                 hearts.Add(currentCards[i]);
-            else if (currentSymbol == CardSymbol.clubs)
+            else if (currentSuit == CardSuit.clubs)
                 clubs.Add(currentCards[i]);
         }
 
@@ -324,14 +334,18 @@ public class CardManager : MonoBehaviour
         List<List<Card>> sortedResultGroups = new List<List<Card>>();
         List<Card> leftovers = new List<Card>();
 
+        List<Card> tempList = currentCards; // remove the 
+        //leftovers.AddRange(tempList.Single(card => card.GetCardType() != CardType.numbered));
+        //tempList.Remove();
+
         // group same numbers
-        IEnumerable<List<Card>> sameNumberCardGroups = currentCards.GroupBy(card => card.GetValue()).Select(group => group.ToList()).ToList();
+        IEnumerable<List<Card>> sameNumberCardGroups = tempList.GroupBy(card => card.GetValue()).Select(group => group.ToList()).ToList();
         List<Card> sortedGroup = new List<Card>();
 
         foreach (List<Card> group in sameNumberCardGroups)
         {     
-            sortedGroup = group.GroupBy(card => card.GetSymbol())
-                                              .Select(symbol => symbol.First())
+            sortedGroup = group.GroupBy(card => card.GetSuit())
+                                              .Select(cardSuit => cardSuit.First())
                                               .ToList();
 
             if(sortedGroup.Count == 3 || sortedGroup.Count == 4)
@@ -345,10 +359,13 @@ public class CardManager : MonoBehaviour
 
         return Tuple.Create(sortedResultGroups, leftovers);
     }
+
     public List<Card> SmartSort()
     {
-        // sort here
-        currentCards.Reverse();
+        Tuple<List<List<Card>>, List<Card>> oneTwoThreeSort = OneTwoThreeSort();
+        Tuple<List<List<Card>>, List<Card>> tripleSevenSort = TripleSevenSort();
+
+        
         return currentCards;
     }
 

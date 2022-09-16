@@ -64,6 +64,10 @@ namespace DeckPlayer.Managers
         {
             overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.game));
         }
+        public void RandomThemeButton()
+        {
+
+        }
 
         #region Sort-Buttons
 

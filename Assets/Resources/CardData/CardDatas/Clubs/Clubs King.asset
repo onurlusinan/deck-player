@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Clubs King
   m_EditorClassIdentifier: 
   value: 10
-  cardSymbol: 3
+  cardSuit: 3
   cardType: 2
   iconSprite: {fileID: -1326342898, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
   imageSprite: {fileID: 559007583, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}

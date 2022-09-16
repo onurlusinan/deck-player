@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hearts 10
   m_EditorClassIdentifier: 
   value: 10
-  cardSymbol: 2
+  cardSuit: 2
   cardType: 0
   iconSprite: {fileID: 996220216, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
   imageSprite: {fileID: 996220216, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}

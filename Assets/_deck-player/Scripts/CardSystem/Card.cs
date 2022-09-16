@@ -10,7 +10,7 @@ using DeckPlayer.Managers;
 
 namespace DeckPlayer.CardSystem
 {
-    public enum CardSymbol
+    public enum CardSuit
     {
         spades,
         diamonds,
@@ -26,10 +26,18 @@ namespace DeckPlayer.CardSystem
         queen
     }
 
+    public enum CardTheme
+    {
+        white,
+        red,
+        green,
+        blue
+    }
+
     public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         [Header("Card Info:")]
-        [SerializeField] private CardSymbol _symbol;
+        [SerializeField] private CardSuit _suit;
         [SerializeField] private CardType _type;
         [SerializeField] private int _value;
 
@@ -37,8 +45,10 @@ namespace DeckPlayer.CardSystem
         public TextMeshProUGUI valueText;
         public Image iconImage;
         public Image cardImage;
+        public Image backgroundImage;
 
-        public CardSymbol GetSymbol() => _symbol;
+        public CardSuit GetSuit() => _suit;
+        public CardType GetCardType() => _type;
         public int GetValue() => _value;
         
         // for drag & drop
@@ -60,7 +70,7 @@ namespace DeckPlayer.CardSystem
         /// </summary>
         public void InitCard(CardData cardData)
         {
-            _symbol = cardData.cardSymbol;
+            _suit = cardData.cardSuit;
             _type = cardData.cardType;
             _value = cardData.value;
 
@@ -87,6 +97,25 @@ namespace DeckPlayer.CardSystem
                         return _value.ToString();
                     else 
                         return "A";
+            }
+        }
+
+        public void ChangeCardTheme(CardTheme theme)
+        {
+            switch(theme)
+            {
+                case CardTheme.white:
+                    backgroundImage.color = Color.white;
+                    break;
+                case CardTheme.red:
+                    backgroundImage.color = Color.red;
+                    break;
+                case CardTheme.green:
+                    backgroundImage.color = Color.green;
+                    break;
+                case CardTheme.blue:
+                    backgroundImage.color = Color.blue;
+                    break;
             }
         }
 
@@ -128,19 +157,6 @@ namespace DeckPlayer.CardSystem
 
             DeckManager.Instance.SetCardToSlot(this, targetCardSlot, 0.2f);
             DeckManager.Instance.draggedCard = null;
-        }
-
-        private void ClampToRect(RectTransform clampingParent)
-        {
-            Vector2 pos = cardRect.localPosition;
-
-            Vector2 minPosition = clampingParent.rect.min - cardRect.rect.min;
-            Vector2 maxPosition = clampingParent.rect.max - cardRect.rect.max;
-
-            pos.x = Mathf.Clamp(cardRect.localPosition.x, minPosition.x, maxPosition.x);
-            pos.y = Mathf.Clamp(cardRect.localPosition.y, minPosition.y, maxPosition.y);
-
-            cardRect.localPosition = pos;
         }
         #endregion
     }
