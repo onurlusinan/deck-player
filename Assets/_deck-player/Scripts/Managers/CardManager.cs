@@ -325,16 +325,22 @@ public class CardManager : MonoBehaviour
         List<Card> leftovers = new List<Card>();
 
         // group same numbers
-        IEnumerable<IGrouping<int, Card>> groups = currentCards.GroupBy(card => card.GetValue());
-        IEnumerable<List<Card>> valueGroups = groups.Select(x => x.ToList()).Distinct().ToList();
-        
-        // get one from each symbol (3 OR 4)
-        foreach(List<Card> valueGroup in valueGroups)
-        {
-            if (valueGroup.Count < 3 || valueGroup.Count > 4)
-                leftovers.AddRange(valueGroup);
+        IEnumerable<List<Card>> sameNumberCardGroups = currentCards.GroupBy(card => card.GetValue()).Select(group => group.ToList()).ToList();
+        List<Card> sortedGroup = new List<Card>();
+
+        foreach (List<Card> group in sameNumberCardGroups)
+        {     
+            sortedGroup = group.GroupBy(card => card.GetSymbol())
+                                              .Select(symbol => symbol.First())
+                                              .ToList();
+
+            if(sortedGroup.Count == 3 || sortedGroup.Count == 4)
+            {
+                sortedResultGroups.Add(sortedGroup);
+                leftovers.AddRange(group.Except(sortedGroup));
+            }
             else
-                sortedResultGroups.Add(valueGroup);
+                leftovers.AddRange(group);   
         }
 
         return Tuple.Create(sortedResultGroups, leftovers);
