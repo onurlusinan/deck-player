@@ -29,9 +29,9 @@ namespace DeckPlayer.CardSystem
     public enum CardTheme
     {
         white,
-        red,
+        magenta,
         green,
-        blue
+        cyan
     }
 
     public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
@@ -50,7 +50,7 @@ namespace DeckPlayer.CardSystem
         public CardSuit GetSuit() => _suit;
         public CardType GetCardType() => _type;
         public int GetValue() => _value;
-        
+
         // for drag & drop
         private RectTransform cardRect;
         private Canvas gameCanvas;
@@ -100,21 +100,21 @@ namespace DeckPlayer.CardSystem
             }
         }
 
-        public void ChangeCardTheme(CardTheme theme)
+        public void ChangeTheme(CardTheme theme)
         {
             switch(theme)
             {
                 case CardTheme.white:
-                    backgroundImage.color = Color.white;
+                    backgroundImage.DOColor(Color.white, 0.2f);
                     break;
-                case CardTheme.red:
-                    backgroundImage.color = Color.red;
+                case CardTheme.magenta:
+                    backgroundImage.DOColor(Color.magenta, 0.2f);
                     break;
                 case CardTheme.green:
-                    backgroundImage.color = Color.green;
+                    backgroundImage.DOColor(Color.green, 0.2f);
                     break;
-                case CardTheme.blue:
-                    backgroundImage.color = Color.blue;
+                case CardTheme.cyan:
+                    backgroundImage.DOColor(Color.cyan, 0.2f);
                     break;
             }
         }

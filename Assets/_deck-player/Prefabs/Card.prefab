@@ -50,12 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc620f7431ef37e419fb4b4b1c6433cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _symbol: 0
+  _suit: 0
   _type: 0
   _value: 0
   valueText: {fileID: 2222357695286655870}
   iconImage: {fileID: 2222357695398655291}
   cardImage: {fileID: 2222357696467375450}
+  backgroundImage: {fileID: 2222357695974037817}
   currentSlot: {fileID: 0}
   targetCardSlot: {fileID: 0}
 --- !u!1 &2222357695286655744

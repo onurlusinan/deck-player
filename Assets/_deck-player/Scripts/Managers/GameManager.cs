@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using DeckPlayer.CardSystem;
 using System.Collections.Generic;
+using System;
 
 namespace DeckPlayer.Managers
 {
@@ -66,7 +67,7 @@ namespace DeckPlayer.Managers
         }
         public void RandomThemeButton()
         {
-
+            CardManager.Instance.ChangeCardsTheme();
         }
 
         #region Sort-Buttons

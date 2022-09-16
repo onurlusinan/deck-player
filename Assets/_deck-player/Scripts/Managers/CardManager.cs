@@ -21,6 +21,8 @@ public class CardManager : MonoBehaviour
     private int initialCardAmount = 11;
     private CardDataCollection cardCollection; // 52 card datas
 
+    private CardTheme _currentTheme = CardTheme.white;
+
     private void Awake()
     {
         if (Instance == null)
@@ -110,10 +112,22 @@ public class CardManager : MonoBehaviour
 
     #region CARD-THEMES
 
-    public void ChangeCardsTheme(CardTheme theme)
+    public void ChangeCardsTheme()
     {
-        foreach (Card card in currentCards)
-            card.ChangeCardTheme(theme);
+        Array values = Enum.GetValues(typeof(CardTheme));
+
+        System.Random random = new System.Random();
+        CardTheme randomTheme = (CardTheme)values.GetValue(random.Next(values.Length));
+
+        if(_currentTheme != randomTheme)
+        {
+            foreach (Card card in currentCards)
+                card.ChangeTheme(randomTheme);
+
+            _currentTheme = randomTheme;
+        }
+        else
+            ChangeCardsTheme();
     }
 
     #endregion
