@@ -10,9 +10,6 @@ public class TestManager : MonoBehaviour
     [Header("Testing Config")]
     public bool isTesting = false;
     public List<CardData> testInputCardDatas;
-    public List<CardData> oneTwoThreeExpectedResult;
-    public List<CardData> tripleSevenExpectedResult;
-    public List<CardData> smartSortExpectedResult;
 
     private void Awake()
     {
