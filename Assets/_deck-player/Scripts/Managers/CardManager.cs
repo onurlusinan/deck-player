@@ -299,7 +299,7 @@ public class CardManager : MonoBehaviour
         return Tuple.Create(sortedLists, leftovers);
     }
 
-    public static Tuple<List<List<CardData>>, List<CardData>> TripleSevenSort(List<CardData> listOfCards)
+    public static Tuple<List<List<CardData>>, List<CardData>> TripleSevenSort(List<CardData> listOfCards, bool trios = true, bool quartets = true)
     {
         List<List<CardData>> sortedResultGroups = new List<List<CardData>>();
         List<CardData> leftovers = new List<CardData>();
@@ -322,7 +322,12 @@ public class CardManager : MonoBehaviour
                                               .Select(cardSuit => cardSuit.First())
                                               .ToList();
 
-            if(sortedGroup.Count == 3 || sortedGroup.Count == 4)
+            if(sortedGroup.Count == 3 && trios)
+            {
+                sortedResultGroups.Add(sortedGroup);
+                leftovers.AddRange(group.Except(sortedGroup));
+            }
+            else if(sortedGroup.Count == 4 && quartets)
             {
                 sortedResultGroups.Add(sortedGroup);
                 leftovers.AddRange(group.Except(sortedGroup));
@@ -341,48 +346,103 @@ public class CardManager : MonoBehaviour
 
         // First do a 1-2-3 sort, and 7-7-7 for it's leftovers
         Tuple<List<List<CardData>>, List<CardData>> oneTwoThreeSort = OneTwoThreeSort(listOfCards);
-        List<List<CardData>> oneTwoThreeValues = oneTwoThreeSort.Item1; 
-        List<CardData> oneTwoThreeLeftovers = oneTwoThreeSort.Item2;
-        Tuple<List<List<CardData>>, List<CardData>> extraTripleSeven = TripleSevenSort(oneTwoThreeLeftovers);
-        oneTwoThreeValues.Union(extraTripleSeven.Item1);
+        Tuple<List<List<CardData>>, List<CardData>> extraTripleSevenTrios = TripleSevenSort(oneTwoThreeSort.Item2, true, false);
+        Tuple<List<List<CardData>>, List<CardData>> extraTripleSevenQuartets = TripleSevenSort(oneTwoThreeSort.Item2, false, true);
 
         // Then do a 7-7-7 sort, and 1-2-3 for it's leftovers
-        Tuple<List<List<CardData>>, List<CardData>> tripleSevenSort = TripleSevenSort(listOfCards);
-        List<List<CardData>> tripleSevenValues = tripleSevenSort.Item1;
-        List<CardData> tripleSevenLeftovers = tripleSevenSort.Item2;
-        Tuple<List<List<CardData>>, List<CardData>> extraOneTwoThree = OneTwoThreeSort(tripleSevenLeftovers);
-        tripleSevenValues.Union(extraOneTwoThree.Item1);
+        Tuple<List<List<CardData>>, List<CardData>> tripleSevenSortTrios = TripleSevenSort(listOfCards, true, false);
+        Tuple<List<List<CardData>>, List<CardData>> extraOneTwoThreeForTrios = OneTwoThreeSort(tripleSevenSortTrios.Item2);
 
-        List<CardGroupSumInfo> cardGroupSumInfos = new List<CardGroupSumInfo>();
+        Tuple<List<List<CardData>>, List<CardData>> tripleSevenSortQuartets = TripleSevenSort(listOfCards, false, true);
+        Tuple<List<List<CardData>>, List<CardData>> extraOneTwoThreeForQuartets = OneTwoThreeSort(tripleSevenSortQuartets.Item2);
 
-        int sumOfValues = 0;
-        foreach(List<CardData> cardGroup in oneTwoThreeValues.Union(tripleSevenValues))
+        #region old-algo
+        //List<CardGroupSumInfo> cardGroupSumInfos = new List<CardGroupSumInfo>();
+
+        //int sumOfValues = 0;
+        //foreach(List<CardData> cardGroup in oneTwoThreeValues.Union(tripleSevenValues))
+        //{
+        //    foreach(CardData card in cardGroup)           
+        //        sumOfValues = sumOfValues + card.value;
+
+        //    CardGroupSumInfo groupInfo = new CardGroupSumInfo();
+        //    groupInfo.cardGroup = cardGroup;
+        //    groupInfo.sumOfValues = sumOfValues;
+        //    cardGroupSumInfos.Add(groupInfo);
+
+        //    sumOfValues = 0;
+        //}
+
+        //// Order the list by descending sums
+        //cardGroupSumInfos.Sort((s1, s2) => s1.sumOfValues.CompareTo(s2.sumOfValues));
+        //cardGroupSumInfos.Reverse();
+
+        //int totalAdded = 0;
+        //for(int i = 0; i < cardGroupSumInfos.Count; i++)
+        //{
+        //    if (totalAdded + cardGroupSumInfos[i].cardGroup.Count > listOfCards.Count)
+        //        break;
+        //    else
+        //    {
+        //        sortedResultGroups.Add(cardGroupSumInfos[i].cardGroup);
+        //        totalAdded = totalAdded + cardGroupSumInfos[i].cardGroup.Count;
+        //    }
+        //}
+
+        #endregion
+
+        //List<List<CardData>> unionOfSortedGroups = oneTwoThreeValues.Union(extraTripleSevenTrios.Item1).Union(extraTripleSevenQuartets.Item1)
+        //                                                            .Union(tripleSevenTrioValues).Union(extraOneTwoThreeForTrios.Item1)
+        //                                                            .Union(tripleSevenQuartetValues).Union(extraOneTwoThreeForQuartets.Item1)
+        //                                                            .ToList();
+
+        List<List<CardData>> unionOfSortedGroups = new List<List<CardData>>();
+        unionOfSortedGroups.AddRange(oneTwoThreeSort.Item1);
+        unionOfSortedGroups.AddRange(extraTripleSevenTrios.Item1);
+        unionOfSortedGroups.AddRange(extraTripleSevenQuartets.Item1);
+        unionOfSortedGroups.AddRange(tripleSevenSortTrios.Item1);
+        unionOfSortedGroups.AddRange(extraOneTwoThreeForTrios.Item1);
+        unionOfSortedGroups.AddRange(tripleSevenSortQuartets.Item1);
+        unionOfSortedGroups.AddRange(extraOneTwoThreeForQuartets.Item1);
+
+        List<List<List<CardData>>> distinctCombinationsOfGroups = new List<List<List<CardData>>>();
+
+        bool hasIntersection = false;
+        List<List<CardData>> distinctGroupsList = new List<List<CardData>>();
+
+        for (int i = 0; i < unionOfSortedGroups.Count; i++)
         {
-            foreach(CardData card in cardGroup)           
-                sumOfValues = sumOfValues + card.value;
+            distinctGroupsList.Add(unionOfSortedGroups[i]);
 
-            CardGroupSumInfo groupInfo = new CardGroupSumInfo();
-            groupInfo.cardGroup = cardGroup;
-            groupInfo.sumOfValues = sumOfValues;
-            cardGroupSumInfos.Add(groupInfo);
+            for (int j = 0; j < unionOfSortedGroups.Count; j++)
+            {
+                for(int k = 0; k < distinctGroupsList.Count; k++)
+                {
+                    List<CardData> distinctGroup = distinctGroupsList[k];
 
-            sumOfValues = 0;
+                    if (unionOfSortedGroups[j] == distinctGroup || unionOfSortedGroups[j].Intersect(distinctGroup).Count() > 0)
+                    {
+                        hasIntersection = true;
+                        break;
+                    }
+                    else
+                        hasIntersection = false;
+                }
+
+                if (!hasIntersection)
+                    distinctGroupsList.Add(unionOfSortedGroups[j]);
+            }
+
+            if(distinctGroupsList.Count() > 1)
+            {
+                distinctCombinationsOfGroups.Add(distinctGroupsList);
+                distinctGroupsList.Clear();
+            }
         }
 
-        // Order the list by descending sums
-        cardGroupSumInfos.Sort((s1, s2) => s1.sumOfValues.CompareTo(s2.sumOfValues));
-        cardGroupSumInfos.Reverse();
-
-        int totalAdded = 0;
-        for(int i = 0; i < cardGroupSumInfos.Count; i++)
+        foreach(List<List<CardData>> distinctCombination in distinctCombinationsOfGroups)
         {
-            if (totalAdded + cardGroupSumInfos[i].cardGroup.Count > listOfCards.Count)
-                break;
-            else
-            {
-                sortedResultGroups.Add(cardGroupSumInfos[i].cardGroup);
-                totalAdded = totalAdded + cardGroupSumInfos[i].cardGroup.Count;
-            }
+            
         }
 
         // find leftovers
