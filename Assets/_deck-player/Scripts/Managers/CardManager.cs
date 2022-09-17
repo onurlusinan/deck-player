@@ -28,7 +28,6 @@ public class CardManager : MonoBehaviour
     private CardDataCollection cardCollection; // 52 card datas
     public Dictionary<CardData, Card> cardDict = new Dictionary<CardData, Card>();
 
-    private List<CardGroupSumInfo> cardGroupSumInfos = new List<CardGroupSumInfo>();
     private CardTheme _currentTheme = CardTheme.white;
 
     private void Awake()
@@ -201,7 +200,7 @@ public class CardManager : MonoBehaviour
     /// </summary>
     /// <param name="sortedCardList"> Has to be sorted </param>
     /// <returns> Tuple of the result and leftovers </returns>
-    private Tuple<List<List<CardData>>, List<CardData>> FindConsecutiveCards(List<CardData> sortedCardList)
+    private static Tuple<List<List<CardData>>, List<CardData>> FindConsecutiveCards(List<CardData> sortedCardList)
     {
         List<List<CardData>> consecutiveLists = sortedCardList.Select((item, idx) => new { I = item, G = item.value - idx })
                                                           .Distinct()
@@ -224,7 +223,7 @@ public class CardManager : MonoBehaviour
         return Tuple.Create(resultLists, leftovers);
     }
 
-    public Tuple<List<List<CardData>>, List<CardData>> OneTwoThreeSort(List<CardData> listOfCards = null)
+    public static Tuple<List<List<CardData>>, List<CardData>> OneTwoThreeSort(List<CardData> listOfCards)
     {
         List<CardData> sortedResult = new List<CardData>();
         List<CardData> leftovers = new List<CardData>();
@@ -234,14 +233,6 @@ public class CardManager : MonoBehaviour
         List<CardData> diamonds = new List<CardData>();
         List<CardData> hearts = new List<CardData>();
         List<CardData> clubs = new List<CardData>();
-
-        if (listOfCards == null)
-        {
-            listOfCards = new List<CardData>();
-
-            foreach(Card card in currentCards)
-                listOfCards.Add(card.cardData);
-        }
             
 
         for(int i = 0; i < listOfCards.Count; i++)
@@ -308,18 +299,10 @@ public class CardManager : MonoBehaviour
         return Tuple.Create(sortedLists, leftovers);
     }
 
-    public Tuple<List<List<CardData>>, List<CardData>> TripleSevenSort(List<CardData> listOfCards = null)
+    public static Tuple<List<List<CardData>>, List<CardData>> TripleSevenSort(List<CardData> listOfCards)
     {
         List<List<CardData>> sortedResultGroups = new List<List<CardData>>();
         List<CardData> leftovers = new List<CardData>();
-
-        if (listOfCards == null)
-        {
-            listOfCards = new List<CardData>();
-
-            foreach (Card card in currentCards)
-                listOfCards.Add(card.cardData);
-        }
 
         List<CardData> tempList = listOfCards;
         List<CardData> nonNumberedCards = tempList.Where(card => card.cardType != CardType.numbered && card.cardType != CardType.ace).ToList();
@@ -351,18 +334,10 @@ public class CardManager : MonoBehaviour
         return Tuple.Create(sortedResultGroups, leftovers);
     }
 
-    public Tuple<List<List<CardData>>, List<CardData>> SmartSort(List<CardData> listOfCards = null)
+    public static Tuple<List<List<CardData>>, List<CardData>> SmartSort(List<CardData> listOfCards)
     {
         List<List<CardData>> sortedResultGroups = new List<List<CardData>>();
         List<CardData> leftovers = new List<CardData>();
-
-        if (listOfCards == null)
-        {
-            listOfCards = new List<CardData>();
-
-            foreach (Card card in currentCards)
-                listOfCards.Add(card.cardData);
-        }
 
         // First do a 1-2-3 sort, and 7-7-7 for it's leftovers
         Tuple<List<List<CardData>>, List<CardData>> oneTwoThreeSort = OneTwoThreeSort(listOfCards);
@@ -377,6 +352,8 @@ public class CardManager : MonoBehaviour
         List<CardData> tripleSevenLeftovers = tripleSevenSort.Item2;
         Tuple<List<List<CardData>>, List<CardData>> extraOneTwoThree = OneTwoThreeSort(tripleSevenLeftovers);
         tripleSevenValues.Union(extraOneTwoThree.Item1);
+
+        List<CardGroupSumInfo> cardGroupSumInfos = new List<CardGroupSumInfo>();
 
         int sumOfValues = 0;
         foreach(List<CardData> cardGroup in oneTwoThreeValues.Union(tripleSevenValues))
@@ -399,7 +376,7 @@ public class CardManager : MonoBehaviour
         int totalAdded = 0;
         for(int i = 0; i < cardGroupSumInfos.Count; i++)
         {
-            if (totalAdded + cardGroupSumInfos[i].cardGroup.Count > currentCards.Count)
+            if (totalAdded + cardGroupSumInfos[i].cardGroup.Count > listOfCards.Count)
                 break;
             else
             {

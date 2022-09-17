@@ -14,4 +14,11 @@ public class CardData : ScriptableObject
     public CardType cardType;
     public Sprite iconSprite;
     public Sprite imageSprite;
+
+    public void Init(int value, CardSuit suit, CardType type)
+    {
+        this.value = value;
+        this.cardSuit = suit;
+        this.cardType = type;
+    }
 }

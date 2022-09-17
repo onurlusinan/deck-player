@@ -90,9 +90,13 @@ namespace DeckPlayer.Managers
         {
             EnableInput(false);
 
+            List<CardData> listOfCards = new List<CardData>();
+            foreach (Card card in CardManager.Instance.currentCards)
+                listOfCards.Add(card.cardData);
+            
             StartCoroutine(
                 DeckManager.Instance.SortCardsFromList(
-                    CardManager.Instance.OneTwoThreeSort()
+                    CardManager.OneTwoThreeSort(listOfCards)
                     )
                 );
         }
@@ -100,9 +104,13 @@ namespace DeckPlayer.Managers
         {
             EnableInput(false);
 
+            List<CardData> listOfCards = new List<CardData>();
+            foreach (Card card in CardManager.Instance.currentCards)
+                listOfCards.Add(card.cardData);
+
             StartCoroutine(
                 DeckManager.Instance.SortCardsFromList(
-                    CardManager.Instance.TripleSevenSort()
+                    CardManager.TripleSevenSort(listOfCards)
                     )
                 );
         }
@@ -110,9 +118,13 @@ namespace DeckPlayer.Managers
         {
             EnableInput(false);
 
+            List<CardData> listOfCards = new List<CardData>();
+            foreach (Card card in CardManager.Instance.currentCards)
+                listOfCards.Add(card.cardData);
+
             StartCoroutine(
                 DeckManager.Instance.SortCardsFromList(
-                    CardManager.Instance.SmartSort()
+                    CardManager.SmartSort(listOfCards)
                     )
                 );
         }
