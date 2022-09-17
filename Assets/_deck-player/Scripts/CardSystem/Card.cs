@@ -20,6 +20,7 @@ namespace DeckPlayer.CardSystem
 
     public enum CardType
     {
+        ace,
         numbered,
         jack,
         king,
@@ -86,6 +87,8 @@ namespace DeckPlayer.CardSystem
         {
             switch (_type)
             {
+                case CardType.ace:
+                    return "A";
                 case CardType.jack:
                     return "J";
                 case CardType.king:
@@ -93,10 +96,8 @@ namespace DeckPlayer.CardSystem
                 case CardType.queen:
                     return "Q";
                 default:
-                    if (_value != 1) 
-                        return _value.ToString();
-                    else 
-                        return "A";
+                    return _value.ToString();
+
             }
         }
 

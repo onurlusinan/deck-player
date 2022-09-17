@@ -29,7 +29,10 @@ namespace DeckPlayer.Managers
 
         private void Start()
         {
-            StartGame();
+            if (!CardManager.Instance.isTesting)
+                StartGame();
+            else
+                TestGame();
         }
 
         private void StartGame()
@@ -37,6 +40,17 @@ namespace DeckPlayer.Managers
             overlay.ShowOverlay(false, 0.5f, () =>
                 {
                     StartCoroutine(CardManager.Instance.DrawRandomCards(() =>
+                        EnableInput(true)
+                    ));
+                }
+            );
+        }
+
+        private void TestGame()
+        {
+            overlay.ShowOverlay(false, 0.5f, () =>
+                {
+                    StartCoroutine(CardManager.Instance.DrawTestCards(() =>
                         EnableInput(true)
                     ));
                 }

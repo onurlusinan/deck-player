@@ -1783,6 +1783,19 @@ MonoBehaviour:
   cardDrawDelay: 0.2
   cardPrefab: {fileID: 2222357695232851097, guid: e40c9b87ef913684d98893daaf1d0132, type: 3}
   currentCards: []
+  isTesting: 1
+  testCardDatas:
+  - {fileID: 11400000, guid: 3498e9543a314a244b2101188db97312, type: 2}
+  - {fileID: 11400000, guid: fae2950616ae4d74699be16caadae171, type: 2}
+  - {fileID: 11400000, guid: 8e4804feef904ae4c96968813334fd76, type: 2}
+  - {fileID: 11400000, guid: f646553d5007519498bfcb242b740840, type: 2}
+  - {fileID: 11400000, guid: 3e846961410d8a642b3cba1ce0d2cefd, type: 2}
+  - {fileID: 11400000, guid: c477c86a7fe1cce4fb83bb30dbc61621, type: 2}
+  - {fileID: 11400000, guid: a8646e352c815c947bdd587f99e3373f, type: 2}
+  - {fileID: 11400000, guid: 5e7f290bfdda4944c967c3e7aff7a1d0, type: 2}
+  - {fileID: 11400000, guid: 53f6267f1d3cbfc4484995843bffe641, type: 2}
+  - {fileID: 11400000, guid: a42412a367968a3418cbc308a2a305f5, type: 2}
+  - {fileID: 11400000, guid: c378b720bcf741142b835a2e25e43fca, type: 2}
 --- !u!1 &806744473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1843,6 +1856,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'RANDOM
 
+    CARD
+
     THEME'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 19a252dfd62a92f46874ccb7f090eb72, type: 2}
@@ -1870,8 +1885,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35
-  m_fontSizeBase: 35
+  m_fontSize: 29.76
+  m_fontSizeBase: 29.76
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

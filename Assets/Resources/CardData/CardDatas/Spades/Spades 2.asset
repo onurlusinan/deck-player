@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spades 2
   m_EditorClassIdentifier: 
   value: 2
-  cardSymbol: 0
-  cardType: 0
+  cardSuit: 0
+  cardType: 1
   iconSprite: {fileID: 45249266, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
   imageSprite: {fileID: 45249266, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}

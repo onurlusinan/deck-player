@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spades Queen
   m_EditorClassIdentifier: 
   value: 10
-  cardSymbol: 0
-  cardType: 3
+  cardSuit: 0
+  cardType: 4
   iconSprite: {fileID: 45249266, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
   imageSprite: {fileID: 545768563, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}

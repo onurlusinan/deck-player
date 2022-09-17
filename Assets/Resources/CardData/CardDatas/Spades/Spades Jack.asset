@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spades Jack
   m_EditorClassIdentifier: 
   value: 10
-  cardSymbol: 0
-  cardType: 1
+  cardSuit: 0
+  cardType: 2
   iconSprite: {fileID: 45249266, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
   imageSprite: {fileID: -1866155508, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}

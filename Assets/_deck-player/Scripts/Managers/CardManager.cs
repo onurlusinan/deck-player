@@ -8,6 +8,12 @@ using DG.Tweening;
 using DeckPlayer.Managers;
 using System.Linq;
 
+struct CardGroupSumInfo
+{
+    public List<Card> cardGroup;
+    public int sumOfValues;
+}
+
 public class CardManager : MonoBehaviour
 {
     public static CardManager Instance;
@@ -21,7 +27,12 @@ public class CardManager : MonoBehaviour
     private int initialCardAmount = 11;
     private CardDataCollection cardCollection; // 52 card datas
 
+    private List<CardGroupSumInfo> cardGroupSumInfos = new List<CardGroupSumInfo>();
     private CardTheme _currentTheme = CardTheme.white;
+
+    [Header("TestDeck")]
+    public bool isTesting = false;
+    public List<CardData> testCardDatas = new List<CardData>(11);
 
     private void Awake()
     {
@@ -69,6 +80,33 @@ public class CardManager : MonoBehaviour
             newCard.currentSlot = cardSlot;
             cardSlot.currentCard = newCard;
             
+            // draw animation
+            RectTransform cardRect = newCard.GetComponent<RectTransform>();
+            cardRect.anchoredPosition = initialCardOffset;
+            cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.25f).SetEase(Ease.OutExpo);
+
+            yield return cardDrawDelay;
+        }
+
+        OnComplete?.Invoke();
+    }
+
+    public IEnumerator DrawTestCards(Action OnComplete = null)
+    {
+        Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
+        WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
+
+        for (int i = 0; i < initialCardAmount; i++)
+        {
+            Card newCard = CreateCard(testCardDatas[i]);
+            CardSlot cardSlot = DeckManager.Instance.GetCardSlot(i).GetComponent<CardSlot>();
+
+            newCard.transform.SetParent(cardSlot.transform, false);
+
+            // set current card slot
+            newCard.currentSlot = cardSlot;
+            cardSlot.currentCard = newCard;
+
             // draw animation
             RectTransform cardRect = newCard.GetComponent<RectTransform>();
             cardRect.anchoredPosition = initialCardOffset;
@@ -355,6 +393,12 @@ public class CardManager : MonoBehaviour
             listOfCards = currentCards;
 
         List<Card> tempList = listOfCards;
+        List<Card> nonNumberedCards = tempList.Where(card => card.GetCardType() != CardType.numbered && card.GetCardType() != CardType.ace).ToList();
+
+        foreach (Card card in nonNumberedCards)
+            leftovers.Add(card);
+
+        tempList = tempList.Except(nonNumberedCards).ToList();
 
         // group same numbers
         IEnumerable<List<Card>> sameNumberCardGroups = tempList.GroupBy(card => card.GetValue()).Select(group => group.ToList()).ToList();
@@ -380,6 +424,9 @@ public class CardManager : MonoBehaviour
 
     public Tuple<List<List<Card>>, List<Card>> SmartSort(List<Card> listOfCards = null)
     {
+        List<List<Card>> sortedResultGroups = new List<List<Card>>();
+        List<Card> leftovers = new List<Card>();
+
         if (listOfCards == null)
             listOfCards = currentCards;
 
@@ -392,25 +439,60 @@ public class CardManager : MonoBehaviour
         List<Card> extraTripleSevenLeftovers = extraTripleSeven.Item2;
 
         // Then do a 7-7-7 sort, and 1-2-3 for it's leftovers
-        Tuple<List<List<Card>>, List<Card>> tripleSevenSort = OneTwoThreeSort(listOfCards);
+        Tuple<List<List<Card>>, List<Card>> tripleSevenSort = TripleSevenSort(listOfCards);
         List<List<Card>> tripleSevenValues = tripleSevenSort.Item1;
         List<Card> tripleSevenLeftovers = tripleSevenSort.Item2;
-        Tuple<List<List<Card>>, List<Card>> extraOneTwoThree = TripleSevenSort(tripleSevenLeftovers);
+        Tuple<List<List<Card>>, List<Card>> extraOneTwoThree = OneTwoThreeSort(tripleSevenLeftovers);
         tripleSevenValues.Union(extraOneTwoThree.Item1);
         List<Card> extraOneTwoThreeLeftovers = extraOneTwoThree.Item2;
 
         // check which leftover sum is greater and return its respective list of cards
-        int firstLeftoverSum = 0;
-        int secondLeftoverSum = 0;
-        foreach(Card card in extraTripleSevenLeftovers)
-            firstLeftoverSum = firstLeftoverSum + card.GetValue();
-        foreach (Card card in extraOneTwoThreeLeftovers)
-            secondLeftoverSum = secondLeftoverSum + card.GetValue();
+        //int firstLeftoverSum = 0;
+        //int secondLeftoverSum = 0;
+        //foreach(Card card in extraTripleSevenLeftovers)
+        //    firstLeftoverSum = firstLeftoverSum + card.GetValue();
+        //foreach (Card card in extraOneTwoThreeLeftovers)
+        //    secondLeftoverSum = secondLeftoverSum + card.GetValue();
 
-        if(firstLeftoverSum > secondLeftoverSum)
-            return Tuple.Create(oneTwoThreeValues, extraTripleSevenLeftovers);
-        else
-            return Tuple.Create(tripleSevenValues, extraOneTwoThreeLeftovers);
+        //if(firstLeftoverSum > secondLeftoverSum)
+        //    return Tuple.Create(oneTwoThreeValues, extraTripleSevenLeftovers);
+        //else
+        //    return Tuple.Create(tripleSevenValues, extraOneTwoThreeLeftovers);
+
+        int sumOfValues = 0;
+        foreach(List<Card> cardGroup in oneTwoThreeValues.Union(tripleSevenValues))
+        {
+            foreach(Card card in cardGroup)           
+                sumOfValues = sumOfValues + card.GetValue();
+
+            CardGroupSumInfo groupInfo = new CardGroupSumInfo();
+            groupInfo.cardGroup = cardGroup;
+            groupInfo.sumOfValues = sumOfValues;
+            cardGroupSumInfos.Add(groupInfo);
+
+            sumOfValues = 0;
+        }
+
+        // Order the list by descending sums
+        cardGroupSumInfos.Sort((s1, s2) => s1.sumOfValues.CompareTo(s2.sumOfValues));
+        cardGroupSumInfos.Reverse();
+
+        int totalAdded = 0;
+        for(int i = 0; i < cardGroupSumInfos.Count; i++)
+        {
+            if (totalAdded >= 9)
+                break;
+
+            sortedResultGroups.Add(cardGroupSumInfos[i].cardGroup);
+            totalAdded = totalAdded + cardGroupSumInfos[i].cardGroup.Count;
+        }
+
+        // find leftovers
+        leftovers = currentCards;
+        for (int i = 0; i < sortedResultGroups.Count; i++)
+            leftovers = leftovers.Except(sortedResultGroups[i]).ToList();
+
+        return Tuple.Create(sortedResultGroups, leftovers);
     }
 
     #endregion

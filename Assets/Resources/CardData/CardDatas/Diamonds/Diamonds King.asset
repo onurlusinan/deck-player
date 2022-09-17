@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   value: 10
   cardSuit: 1
-  cardType: 2
+  cardType: 3
   iconSprite: {fileID: -1162174132, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
   imageSprite: {fileID: 559007583, guid: a8d15e6f8b44a48479248cca3e7c26d9, type: 3}
