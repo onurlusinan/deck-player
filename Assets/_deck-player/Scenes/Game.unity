@@ -152,7 +152,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &79480506
 GameObject:
@@ -313,7 +313,7 @@ RectTransform:
   - {fileID: 1779744956}
   - {fileID: 1667487598}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -660,6 +660,99 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &225899062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 225899063}
+  - component: {fileID: 225899064}
+  m_Layer: 0
+  m_Name: TestManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &225899063
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225899062}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.17058374, y: -0.12149805, z: 347.3411}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &225899064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225899062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77173f3558dfd8a40ace46ec3a672a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTesting: 1
+  testInputCardDatas:
+  - {fileID: 11400000, guid: 3498e9543a314a244b2101188db97312, type: 2}
+  - {fileID: 11400000, guid: fae2950616ae4d74699be16caadae171, type: 2}
+  - {fileID: 11400000, guid: 8e4804feef904ae4c96968813334fd76, type: 2}
+  - {fileID: 11400000, guid: f646553d5007519498bfcb242b740840, type: 2}
+  - {fileID: 11400000, guid: 3e846961410d8a642b3cba1ce0d2cefd, type: 2}
+  - {fileID: 11400000, guid: c477c86a7fe1cce4fb83bb30dbc61621, type: 2}
+  - {fileID: 11400000, guid: a8646e352c815c947bdd587f99e3373f, type: 2}
+  - {fileID: 11400000, guid: 5e7f290bfdda4944c967c3e7aff7a1d0, type: 2}
+  - {fileID: 11400000, guid: 53f6267f1d3cbfc4484995843bffe641, type: 2}
+  - {fileID: 11400000, guid: a42412a367968a3418cbc308a2a305f5, type: 2}
+  - {fileID: 11400000, guid: c378b720bcf741142b835a2e25e43fca, type: 2}
+  oneTwoThreeExpectedResult:
+  - {fileID: 2222357695232851095, guid: a7594a7775a7a2440ac1cfcb85543b79, type: 3}
+  - {fileID: 2222357695232851095, guid: 34f65fdda4ed3c6408d17dd7a8670e32, type: 3}
+  - {fileID: 2222357695232851095, guid: a73533aaabe78a34fba3445e597703f9, type: 3}
+  - {fileID: 2222357695232851095, guid: 25334aa7221db2e4b90d3ddf14a6cfde, type: 3}
+  - {fileID: 2222357695232851095, guid: 6f33fa1cbc65f8c428f8a4c892fa55b6, type: 3}
+  - {fileID: 2222357695232851095, guid: 262c96d606a4c13449d8c01f42954e70, type: 3}
+  - {fileID: 2222357695232851095, guid: 0eb6d47b4aad365428f5b1f654ec4b99, type: 3}
+  - {fileID: 2222357695232851095, guid: 12b5880e73c2032458a14680cebfe85d, type: 3}
+  - {fileID: 2222357695232851095, guid: 50476be328da31e45b5e67b60bbeb4aa, type: 3}
+  - {fileID: 2222357695232851095, guid: ff87bcf75f54b0141a78b410f71f54b7, type: 3}
+  - {fileID: 2222357695232851095, guid: 25334aa7221db2e4b90d3ddf14a6cfde, type: 3}
+  tripleSevenExpectedResult:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  smartSortExpectedResult:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &312467164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1783,19 +1876,6 @@ MonoBehaviour:
   cardDrawDelay: 0.2
   cardPrefab: {fileID: 2222357695232851097, guid: e40c9b87ef913684d98893daaf1d0132, type: 3}
   currentCards: []
-  isTesting: 1
-  testCardDatas:
-  - {fileID: 11400000, guid: 3498e9543a314a244b2101188db97312, type: 2}
-  - {fileID: 11400000, guid: fae2950616ae4d74699be16caadae171, type: 2}
-  - {fileID: 11400000, guid: 8e4804feef904ae4c96968813334fd76, type: 2}
-  - {fileID: 11400000, guid: f646553d5007519498bfcb242b740840, type: 2}
-  - {fileID: 11400000, guid: 3e846961410d8a642b3cba1ce0d2cefd, type: 2}
-  - {fileID: 11400000, guid: c477c86a7fe1cce4fb83bb30dbc61621, type: 2}
-  - {fileID: 11400000, guid: a8646e352c815c947bdd587f99e3373f, type: 2}
-  - {fileID: 11400000, guid: 5e7f290bfdda4944c967c3e7aff7a1d0, type: 2}
-  - {fileID: 11400000, guid: 53f6267f1d3cbfc4484995843bffe641, type: 2}
-  - {fileID: 11400000, guid: a42412a367968a3418cbc308a2a305f5, type: 2}
-  - {fileID: 11400000, guid: c378b720bcf741142b835a2e25e43fca, type: 2}
 --- !u!1 &806744473
 GameObject:
   m_ObjectHideFlags: 0

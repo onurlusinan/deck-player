@@ -30,10 +30,6 @@ public class CardManager : MonoBehaviour
     private List<CardGroupSumInfo> cardGroupSumInfos = new List<CardGroupSumInfo>();
     private CardTheme _currentTheme = CardTheme.white;
 
-    [Header("TestDeck")]
-    public bool isTesting = false;
-    public List<CardData> testCardDatas = new List<CardData>(11);
-
     private void Awake()
     {
         if (Instance == null)
@@ -98,7 +94,7 @@ public class CardManager : MonoBehaviour
 
         for (int i = 0; i < initialCardAmount; i++)
         {
-            Card newCard = CreateCard(testCardDatas[i]);
+            Card newCard = CreateCard(TestManager.Instance.testInputCardDatas[i]);
             CardSlot cardSlot = DeckManager.Instance.GetCardSlot(i).GetComponent<CardSlot>();
 
             newCard.transform.SetParent(cardSlot.transform, false);
@@ -436,7 +432,6 @@ public class CardManager : MonoBehaviour
         List<Card> oneTwoThreeLeftovers = oneTwoThreeSort.Item2;
         Tuple<List<List<Card>>, List<Card>> extraTripleSeven = TripleSevenSort(oneTwoThreeLeftovers);
         oneTwoThreeValues.Union(extraTripleSeven.Item1);
-        List<Card> extraTripleSevenLeftovers = extraTripleSeven.Item2;
 
         // Then do a 7-7-7 sort, and 1-2-3 for it's leftovers
         Tuple<List<List<Card>>, List<Card>> tripleSevenSort = TripleSevenSort(listOfCards);
@@ -444,20 +439,6 @@ public class CardManager : MonoBehaviour
         List<Card> tripleSevenLeftovers = tripleSevenSort.Item2;
         Tuple<List<List<Card>>, List<Card>> extraOneTwoThree = OneTwoThreeSort(tripleSevenLeftovers);
         tripleSevenValues.Union(extraOneTwoThree.Item1);
-        List<Card> extraOneTwoThreeLeftovers = extraOneTwoThree.Item2;
-
-        // check which leftover sum is greater and return its respective list of cards
-        //int firstLeftoverSum = 0;
-        //int secondLeftoverSum = 0;
-        //foreach(Card card in extraTripleSevenLeftovers)
-        //    firstLeftoverSum = firstLeftoverSum + card.GetValue();
-        //foreach (Card card in extraOneTwoThreeLeftovers)
-        //    secondLeftoverSum = secondLeftoverSum + card.GetValue();
-
-        //if(firstLeftoverSum > secondLeftoverSum)
-        //    return Tuple.Create(oneTwoThreeValues, extraTripleSevenLeftovers);
-        //else
-        //    return Tuple.Create(tripleSevenValues, extraOneTwoThreeLeftovers);
 
         int sumOfValues = 0;
         foreach(List<Card> cardGroup in oneTwoThreeValues.Union(tripleSevenValues))
@@ -480,11 +461,13 @@ public class CardManager : MonoBehaviour
         int totalAdded = 0;
         for(int i = 0; i < cardGroupSumInfos.Count; i++)
         {
-            if (totalAdded >= 9)
+            if (totalAdded + cardGroupSumInfos[i].cardGroup.Count > currentCards.Count)
                 break;
-
-            sortedResultGroups.Add(cardGroupSumInfos[i].cardGroup);
-            totalAdded = totalAdded + cardGroupSumInfos[i].cardGroup.Count;
+            else
+            {
+                sortedResultGroups.Add(cardGroupSumInfos[i].cardGroup);
+                totalAdded = totalAdded + cardGroupSumInfos[i].cardGroup.Count;
+            }
         }
 
         // find leftovers

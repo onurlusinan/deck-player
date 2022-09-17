@@ -29,7 +29,7 @@ namespace DeckPlayer.Managers
 
         private void Start()
         {
-            if (!CardManager.Instance.isTesting)
+            if (!TestManager.Instance.isTesting)
                 StartGame();
             else
                 TestGame();
