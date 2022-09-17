@@ -37,10 +37,7 @@ namespace DeckPlayer.CardSystem
 
     public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
-        [Header("Card Info:")]
-        [SerializeField] private CardSuit _suit;
-        [SerializeField] private CardType _type;
-        [SerializeField] private int _value;
+        internal CardData cardData;
 
         [Header("Card-Display Configuration")]
         public TextMeshProUGUI valueText;
@@ -48,9 +45,9 @@ namespace DeckPlayer.CardSystem
         public Image cardImage;
         public Image backgroundImage;
 
-        public CardSuit GetSuit() => _suit;
-        public CardType GetCardType() => _type;
-        public int GetValue() => _value;
+        public CardSuit GetSuit() => cardData.cardSuit;
+        public CardType GetCardType() => cardData.cardType;
+        public int GetValue() => cardData.value;
 
         // for drag & drop
         private RectTransform cardRect;
@@ -71,9 +68,7 @@ namespace DeckPlayer.CardSystem
         /// </summary>
         public void InitCard(CardData cardData)
         {
-            _suit = cardData.cardSuit;
-            _type = cardData.cardType;
-            _value = cardData.value;
+            this.cardData = cardData;
 
             this.valueText.SetText(GetCardText());
             this.iconImage.sprite = cardData.iconSprite;
@@ -85,7 +80,7 @@ namespace DeckPlayer.CardSystem
         /// </summary>
         private string GetCardText()
         {
-            switch (_type)
+            switch (GetCardType())
             {
                 case CardType.ace:
                     return "A";
@@ -96,7 +91,7 @@ namespace DeckPlayer.CardSystem
                 case CardType.queen:
                     return "Q";
                 default:
-                    return _value.ToString();
+                    return cardData.value.ToString();
 
             }
         }

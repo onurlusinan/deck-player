@@ -60,7 +60,7 @@ namespace DeckPlayer.Managers
             return cardSlots[index];
         }
 
-        public IEnumerator SortCardsFromList(Tuple<List<List<Card>>, List<Card>> listsTuple)
+        public IEnumerator SortCardsFromList(Tuple<List<List<CardData>>, List<CardData>> listsTuple)
         {
             for(int i = 0; i < cardSlots.Count; i++)
             {
@@ -70,7 +70,7 @@ namespace DeckPlayer.Managers
 
             yield return null;
 
-            List<List<Card>> sortedGroups = listsTuple.Item1;
+            List<List<CardData>> sortedGroups = listsTuple.Item1;
             int slottedCards = 0;
 
             if(sortedGroups.Count > 0) // sorted groups, if there are any
@@ -79,7 +79,7 @@ namespace DeckPlayer.Managers
                 {
                     for(int j = 0; j < sortedGroups[i].Count; j++)
                     {
-                        Card card = sortedGroups[i][j];
+                        Card card = CardManager.Instance.cardDict[sortedGroups[i][j]];
 
                         SetCardToSlot(card, cardSlots[slottedCards].GetComponent<CardSlot>(), 0.25f, true, (i+1)/2f);
                         slottedCards++;
@@ -89,11 +89,11 @@ namespace DeckPlayer.Managers
                 }
             }
 
-            List<Card> leftOvers = listsTuple.Item2;
+            List<CardData> leftOvers = listsTuple.Item2;
 
             for (int i = 0; i < leftOvers.Count; i++) // leftovers
             {
-                SetCardToSlot(leftOvers[i], cardSlots[i + slottedCards].GetComponent<CardSlot>(), 0.25f, true);
+                SetCardToSlot(CardManager.Instance.cardDict[leftOvers[i]], cardSlots[i + slottedCards].GetComponent<CardSlot>(), 0.25f, true);
                 yield return sortDelay;
             }
                 

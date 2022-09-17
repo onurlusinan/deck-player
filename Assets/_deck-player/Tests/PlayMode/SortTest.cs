@@ -11,18 +11,18 @@ namespace DeckPlayer.Tests
 { 
     public class SortTests
     {
-        private List<Card> ConvertResultToList(Tuple<List<List<Card>>, List<Card>> result)
+        private List<CardData> ConvertResultToList(Tuple<List<List<CardData>>, List<CardData>> result)
         {
-            List<Card> resultList = new List<Card>();   
+            List<CardData> resultList = new List<CardData>();   
 
-            foreach(List<Card> cardList in result.Item1)
+            foreach(List<CardData> cardList in result.Item1)
             {
-                foreach(Card card in cardList)
-                    resultList.Add(card);
+                foreach(CardData cardData in cardList)
+                    resultList.Add(cardData);
             }
 
-            foreach (Card card in result.Item2)
-                resultList.Add(card);
+            foreach (CardData cardData in result.Item2)
+                resultList.Add(cardData);
 
             return resultList;
         }
@@ -30,8 +30,8 @@ namespace DeckPlayer.Tests
         [UnityTest]
         public IEnumerator OneTwoThreeSort()
         {
-            Tuple<List<List<Card>>, List<Card>> oneTwoThreeSort = CardManager.Instance.OneTwoThreeSort(CardManager.Instance.currentCards);
-            List<Card> resultingList = ConvertResultToList(oneTwoThreeSort);
+            Tuple<List<List<CardData>>, List<CardData>> oneTwoThreeSort = CardManager.Instance.OneTwoThreeSort();
+            List<CardData> resultingList = ConvertResultToList(oneTwoThreeSort);
 
             yield return null;
 

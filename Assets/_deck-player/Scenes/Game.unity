@@ -718,17 +718,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a42412a367968a3418cbc308a2a305f5, type: 2}
   - {fileID: 11400000, guid: c378b720bcf741142b835a2e25e43fca, type: 2}
   oneTwoThreeExpectedResult:
-  - {fileID: 2222357695232851095, guid: a7594a7775a7a2440ac1cfcb85543b79, type: 3}
-  - {fileID: 2222357695232851095, guid: 34f65fdda4ed3c6408d17dd7a8670e32, type: 3}
-  - {fileID: 2222357695232851095, guid: a73533aaabe78a34fba3445e597703f9, type: 3}
-  - {fileID: 2222357695232851095, guid: 25334aa7221db2e4b90d3ddf14a6cfde, type: 3}
-  - {fileID: 2222357695232851095, guid: 6f33fa1cbc65f8c428f8a4c892fa55b6, type: 3}
-  - {fileID: 2222357695232851095, guid: 262c96d606a4c13449d8c01f42954e70, type: 3}
-  - {fileID: 2222357695232851095, guid: 0eb6d47b4aad365428f5b1f654ec4b99, type: 3}
-  - {fileID: 2222357695232851095, guid: 12b5880e73c2032458a14680cebfe85d, type: 3}
-  - {fileID: 2222357695232851095, guid: 50476be328da31e45b5e67b60bbeb4aa, type: 3}
-  - {fileID: 2222357695232851095, guid: ff87bcf75f54b0141a78b410f71f54b7, type: 3}
-  - {fileID: 2222357695232851095, guid: 25334aa7221db2e4b90d3ddf14a6cfde, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   tripleSevenExpectedResult:
   - {fileID: 0}
   - {fileID: 0}
