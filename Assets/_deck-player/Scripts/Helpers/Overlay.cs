@@ -17,6 +17,12 @@ public class Overlay : MonoBehaviour
         overlay = GetComponent<Image>();
     }
 
+    /// <summary>
+    /// Show/hide overlay method
+    /// </summary>
+    /// <param name="show"> show or hide </param>
+    /// <param name="delay"> delay </param>
+    /// <param name="OnComplete"> OnComplete is called after the execution </param>
     public void ShowOverlay(bool show, float delay, Action OnComplete = null)
     {
         Sequence overlaySeq = DOTween.Sequence();

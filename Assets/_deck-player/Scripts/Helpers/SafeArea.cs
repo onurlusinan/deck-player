@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // will not work without this do NOT delete
+using UnityEngine.UI; 
 
 /// <summary>
 /// This script puts its child objects in the safe area based on the device

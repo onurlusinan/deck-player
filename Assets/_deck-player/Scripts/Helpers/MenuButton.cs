@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 using DeckPlayer.Audio;
 
+/// <summary>
+/// Attach this Monobehaviour to any rect to get a clicking animation + sound
+/// </summary>
 public class MenuButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 {
     [Header("Button Config")]
@@ -30,6 +33,5 @@ public class MenuButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
         if (sound && SoundManager.Instance)
             SoundManager.Instance.Play(Sounds.buttonClick);
-
     }
 }

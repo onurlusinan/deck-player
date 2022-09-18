@@ -18,7 +18,7 @@ namespace DeckPlayer.Managers
         public RectTransform cardDeck;
         public RectTransform controlPanel;
 
-        public bool deckInput = false;
+        internal bool deckInput = false;
 
         [Header("Testing Config")]
         public List<CardData> testInputCardDatas;
