@@ -58,11 +58,6 @@ public class CardManager : MonoBehaviour
 
         List<int> uniqueRandomList = GenerateRandomUniqueIntegers(initialCardAmount, 52);
 
-        foreach(int uniqueRandom in uniqueRandomList)
-        {
-            Debug.Log(uniqueRandom);
-        }
-
         int randomIndex;
 
         for (int i = 0; i < initialCardAmount; i++)
