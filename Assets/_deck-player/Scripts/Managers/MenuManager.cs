@@ -14,6 +14,11 @@ namespace DeckPlayer.Managers
     {
         public Overlay overlay;
 
+        private void Awake()
+        {
+            Application.targetFrameRate = 60;
+        }
+
         private void Start()
         {
             overlay.ShowOverlay(false, 0.25f);
