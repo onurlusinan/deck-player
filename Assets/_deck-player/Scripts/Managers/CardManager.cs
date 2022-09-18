@@ -54,7 +54,7 @@ namespace DeckPlayer.Managers
             WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
 
 
-            List<int> uniqueRandomList = GenerateRandomUniqueIntegers(initialCardAmount, 52);
+            List<int> uniqueRandomList = Helpers.GenerateRandomUniqueIntegers(initialCardAmount, 52);
 
             int randomIndex;
 
@@ -129,23 +129,6 @@ namespace DeckPlayer.Managers
             currentCards.Add(card);
             card.InitCard(cardData);
             return card;
-        }
-
-        private static List<int> GenerateRandomUniqueIntegers(int amount, int maxValue)
-        {
-            List<int> randomList = new List<int>(amount);
-
-            for (int i = 0; i < amount; i++)
-            {
-                int numToAdd = UnityEngine.Random.Range(0, maxValue);
-
-                while (randomList.Contains(numToAdd))
-                    numToAdd = UnityEngine.Random.Range(0, maxValue);
-
-                randomList.Add(numToAdd);
-            }
-
-            return randomList;
         }
         #endregion
 
@@ -397,6 +380,28 @@ namespace DeckPlayer.Managers
 
     public static class Helpers
     {
+        /// <summary>
+        /// Generates random positive unique integers
+        /// </summary>
+        /// <param name="amount"> amount of integers </param>
+        /// <param name="maxValue"> Max Value </param>
+        internal static List<int> GenerateRandomUniqueIntegers(int amount, int maxValue)
+        {
+            List<int> randomList = new List<int>(amount);
+
+            for (int i = 0; i < amount; i++)
+            {
+                int numToAdd = UnityEngine.Random.Range(0, maxValue);
+
+                while (randomList.Contains(numToAdd))
+                    numToAdd = UnityEngine.Random.Range(0, maxValue);
+
+                randomList.Add(numToAdd);
+            }
+
+            return randomList;
+        }
+
         /// <summary>
         /// Finds the cards with consecutive values in a card list sorted by value
         /// </summary>
