@@ -5,6 +5,7 @@ using DeckPlayer.CardSystem;
 using DG.Tweening;
 using System;
 using System.Collections;
+using DeckPlayer.Audio;
 
 namespace DeckPlayer.Managers
 { 
@@ -117,15 +118,13 @@ namespace DeckPlayer.Managers
             if (sortGroupHeight > 0f)
             {
                 card.transform.DOMove(new Vector3(cardSlot.transform.position.x, sortGroupHeight, cardSlot.transform.position.z), duration);
-
-                //Sequence groupCardSequence = DOTween.Sequence();
-                //groupCardSequence.Append(card.transform.DOMove(cardSlot.transform.position, duration))
-                //                 .Append(card.transform.DOMoveY(sortGroupHeight, 0.2f));
             }
             else
                 card.transform.DOMove(cardSlot.transform.position, duration).OnComplete(() =>
                                 card.transform.localPosition = Vector3.zero
                 );
+
+            SoundManager.Instance.Play(Sounds.cardSwoosh);
 
             settingCard = false;
         }

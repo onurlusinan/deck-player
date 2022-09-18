@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 using DG.Tweening;
+using DeckPlayer.Audio;
 
 public class MenuButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 {
     [Header("Button Config")]
     public bool animated = true;
-    //public bool sound = true;
-    //public bool haptics = true;
+    public bool sound = true;
 
     private RectTransform rect;
 
@@ -28,8 +28,8 @@ public class MenuButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
         if (animated)
             rect.DOScale(0.9f, 0.1f);
 
-        //if (sound && SoundManager.Instance)
-        //    SoundManager.Instance.Play(Sounds.UIButton);
+        if (sound && SoundManager.Instance)
+            SoundManager.Instance.Play(Sounds.buttonClick);
 
     }
 }

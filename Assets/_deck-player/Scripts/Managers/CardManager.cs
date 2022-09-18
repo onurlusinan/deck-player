@@ -7,6 +7,7 @@ using DeckPlayer.CardSystem;
 using DG.Tweening;
 using DeckPlayer.Managers;
 using System.Linq;
+using DeckPlayer.Audio;
 
 struct CardGroupSumInfo
 {
@@ -81,6 +82,8 @@ public class CardManager : MonoBehaviour
             cardRect.anchoredPosition = initialCardOffset;
             cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.25f).SetEase(Ease.OutExpo);
 
+            SoundManager.Instance.Play(Sounds.cardDraw);
+
             yield return cardDrawDelay;
         }
 
@@ -107,6 +110,8 @@ public class CardManager : MonoBehaviour
             RectTransform cardRect = newCard.GetComponent<RectTransform>();
             cardRect.anchoredPosition = initialCardOffset;
             cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.25f).SetEase(Ease.OutExpo);
+
+            SoundManager.Instance.Play(Sounds.cardDraw);
 
             yield return cardDrawDelay;
         }
@@ -233,30 +238,34 @@ public class CardManager : MonoBehaviour
 
         Tuple<List<List<CardData>>, List<CardData>> resultTuple;
         List<List<CardData>> sortedLists = new List<List<CardData>>();
+        List<CardData> currentConsecutiveList = new List<CardData>();
 
-        resultTuple = FindConsecutiveCards(spades);
-        if(resultTuple.Item1.Count > 0)
-            foreach(List<CardData> sortedList in resultTuple.Item1)
-                sortedLists.Add(sortedList);
-        leftovers.AddRange(resultTuple.Item2);
+        for(int i = 0; i < Enum.GetNames(typeof(CardSuit)).Length; i++)
+        {
+            CardSuit cardSuit = (CardSuit)i;
+            
+            switch(cardSuit)
+            {
+                case CardSuit.spades:
+                    currentConsecutiveList = spades;
+                    break;
+                case CardSuit.diamonds:
+                    currentConsecutiveList = diamonds;
+                    break;
+                case CardSuit.hearts:
+                    currentConsecutiveList = hearts;
+                    break;
+                case CardSuit.clubs:
+                    currentConsecutiveList = clubs;
+                    break;
+            }
 
-        resultTuple = FindConsecutiveCards(diamonds);
-        if (resultTuple.Item1.Count > 0)
+            resultTuple = FindConsecutiveCards(currentConsecutiveList);
+            if (resultTuple.Item1.Count > 0)
             foreach (List<CardData> sortedList in resultTuple.Item1)
-                sortedLists.Add(sortedList);
-        leftovers.AddRange(resultTuple.Item2);
-
-        resultTuple = FindConsecutiveCards(hearts);
-        if (resultTuple.Item1.Count > 0)
-            foreach (List<CardData> sortedList in resultTuple.Item1)
-                sortedLists.Add(sortedList);
-        leftovers.AddRange(resultTuple.Item2);
-
-        resultTuple = FindConsecutiveCards(clubs);
-        if (resultTuple.Item1.Count > 0)
-            foreach (List<CardData> sortedList in resultTuple.Item1)
-                sortedLists.Add(sortedList);
-        leftovers.AddRange(resultTuple.Item2);
+                    sortedLists.Add(sortedList);
+            leftovers.AddRange(resultTuple.Item2);
+        }
 
         return Tuple.Create(sortedLists, leftovers);
     }
