@@ -100,14 +100,10 @@ namespace DeckPlayer.Managers
         public void OneTwoThreeSortButton()
         {
             EnableInput(false);
-
-            List<CardData> listOfCards = new List<CardData>();
-            foreach (Card card in CardManager.Instance.currentCards)
-                listOfCards.Add(card.cardData);
             
             StartCoroutine(
                 DeckManager.Instance.SortCardsFromList(
-                    CardManager.OneTwoThreeSort(listOfCards)
+                    CardManager.Instance.oneTwoThreeSortResult
                     )
                 );
         }
@@ -115,13 +111,9 @@ namespace DeckPlayer.Managers
         {
             EnableInput(false);
 
-            List<CardData> listOfCards = new List<CardData>();
-            foreach (Card card in CardManager.Instance.currentCards)
-                listOfCards.Add(card.cardData);
-
             StartCoroutine(
                 DeckManager.Instance.SortCardsFromList(
-                    CardManager.TripleSevenSort(listOfCards)
+                    CardManager.Instance.tripleSevenSortResult
                     )
                 );
         }
@@ -129,13 +121,9 @@ namespace DeckPlayer.Managers
         {
             EnableInput(false);
 
-            List<CardData> listOfCards = new List<CardData>();
-            foreach (Card card in CardManager.Instance.currentCards)
-                listOfCards.Add(card.cardData);
-
             StartCoroutine(
                 DeckManager.Instance.SortCardsFromList(
-                    CardManager.SmartSort(listOfCards)
+                    CardManager.Instance.smartSortResult
                     )
                 );
         }

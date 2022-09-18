@@ -27,6 +27,11 @@ namespace DeckPlayer.Managers
 
         private CardTheme _currentTheme = CardTheme.white;
 
+        // preloading the sorted lists
+        internal Tuple<List<List<CardData>>, List<CardData>> oneTwoThreeSortResult;
+        internal Tuple<List<List<CardData>>, List<CardData>> tripleSevenSortResult;
+        internal Tuple<List<List<CardData>>, List<CardData>> smartSortResult;
+
         private void Awake()
         {
             if (Instance == null)
@@ -82,6 +87,7 @@ namespace DeckPlayer.Managers
             }
 
             OnComplete?.Invoke();
+            PreSortLists();
         }
 
         /// <summary>
@@ -116,6 +122,7 @@ namespace DeckPlayer.Managers
             }
 
             OnComplete?.Invoke();
+            PreSortLists();
         }
 
         /// <summary>
@@ -157,6 +164,18 @@ namespace DeckPlayer.Managers
         #endregion
 
         #region SORTING
+
+        public void PreSortLists()
+        {
+            List<CardData> listOfCards = new List<CardData>();
+            foreach (Card card in currentCards)
+                listOfCards.Add(card.cardData);
+
+            oneTwoThreeSortResult = OneTwoThreeSort(listOfCards);
+            tripleSevenSortResult = TripleSevenSort(listOfCards);
+            smartSortResult = SmartSort(listOfCards);
+        }
+
         /// <summary>
         /// Sorts by consecutive values and same card suits
         /// </summary>
