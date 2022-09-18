@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 0
+    x: 2560
     y: 43
-    width: 2560
-    height: 1357
+    width: 1920
+    height: 997
   m_ShowMode: 4
   m_Title: Game
   m_RootView: {fileID: 4}
@@ -40,9 +40,9 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 702
-    width: 523
-    height: 605
+    y: 509
+    width: 392
+    height: 438
   m_MinSize: {x: 101, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 16}
@@ -67,14 +67,14 @@ MonoBehaviour:
   - {fileID: 2}
   m_Position:
     serializedVersion: 2
-    x: 2037
+    x: 1528
     y: 0
-    width: 523
-    height: 1307
+    width: 392
+    height: 947
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 176
+  controlID: 65
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -95,8 +95,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2560
-    height: 1357
+    width: 1920
+    height: 997
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
@@ -120,7 +120,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2560
+    width: 1920
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -141,8 +141,8 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 1337
-    width: 2560
+    y: 977
+    width: 1920
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -165,12 +165,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
-    width: 2560
-    height: 1307
+    width: 1920
+    height: 947
   m_MinSize: {x: 500, y: 200}
   m_MaxSize: {x: 40480, y: 16192}
   vertical: 0
-  controlID: 175
+  controlID: 174
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -190,12 +190,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2037
-    height: 1307
+    width: 1528
+    height: 947
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 1
-  controlID: 151
+  controlID: 175
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -217,12 +217,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2037
-    height: 931
+    width: 1528
+    height: 675
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 8096}
   vertical: 0
-  controlID: 152
+  controlID: 176
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -240,10 +240,10 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 485
-    height: 931
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+    width: 363
+    height: 675
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -264,12 +264,12 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 485
+    x: 363
     y: 0
-    width: 1180
-    height: 931
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+    width: 885
+    height: 675
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -290,10 +290,10 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1665
+    x: 1248
     y: 0
-    width: 175
-    height: 931
+    width: 131
+    height: 675
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 19}
@@ -316,10 +316,10 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1840
+    x: 1379
     y: 0
-    width: 197
-    height: 931
+    width: 149
+    height: 675
   m_MinSize: {x: 232, y: 271}
   m_MaxSize: {x: 10002, y: 10021}
   m_ActualView: {fileID: 20}
@@ -343,9 +343,9 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 931
-    width: 2037
-    height: 376
+    y: 675
+    width: 1528
+    height: 272
   m_MinSize: {x: 101, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 21}
@@ -372,8 +372,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 523
-    height: 702
+    width: 392
+    height: 509
   m_MinSize: {x: 276, y: 71}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 24}
@@ -401,21 +401,21 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2037
-    y: 775
-    width: 522
-    height: 584
+    x: 4088
+    y: 582
+    width: 391
+    height: 417
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_Spl:
-    ID: 181
+    ID: 198
     splitterInitialOffset: 246
     currentActiveSplitter: -1
     realSizes:
-    - 179
-    - 335
+    - 121
+    - 226
     relativeSizes:
     - 0.34765625
     - 0.65234375
@@ -425,7 +425,7 @@ MonoBehaviour:
     maxSizes:
     - 0
     - 0
-    lastTotalSize: 514
+    lastTotalSize: 347
     splitSize: 6
     xOffset: 0
     m_Version: 1
@@ -442,7 +442,7 @@ MonoBehaviour:
       name: deck-player
       fullName: deck-player
       resultStatus: 2
-      duration: 1.3283311
+      duration: 0.2358175
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -458,7 +458,7 @@ MonoBehaviour:
       name: PlayMode.dll
       fullName: G:/Work/PersonalWork/deck-player/Library/ScriptAssemblies/PlayMode.dll
       resultStatus: 2
-      duration: 0.9123489
+      duration: 0.0854084
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -474,7 +474,7 @@ MonoBehaviour:
       name: DeckPlayer
       fullName: DeckPlayer
       resultStatus: 2
-      duration: 0.8985457
+      duration: 0.0780112
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -490,7 +490,7 @@ MonoBehaviour:
       name: Tests
       fullName: DeckPlayer.Tests
       resultStatus: 2
-      duration: 0.8909169
+      duration: 0.0751093
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -506,7 +506,7 @@ MonoBehaviour:
       name: SortTests
       fullName: DeckPlayer.Tests.SortTests
       resultStatus: 2
-      duration: 0.8822518
+      duration: 0.0704421
       messages: One or more child tests had errors
       output: 
       stacktrace: 
@@ -552,33 +552,13 @@ MonoBehaviour:
       name: SmartSort
       fullName: DeckPlayer.Tests.SortTests.SmartSort
       resultStatus: 2
-      duration: 0.6168401
-      messages: "  Expected and actual are both <System.Collections.Generic.List`1[System.Collections.Generic.List`1[CardData]]>
-        with 3 elements\r\n  Values differ at index [0]\r\n    Expected is <System.Collections.Generic.List`1[CardData]>
-        with 3 elements, actual is <System.Collections.Generic.List`1[CardData]>
-        with 4 elements\r\n    Values differ at index [0]\r\n  Expected: < (CardData)>\r\n 
-        But was:  < (CardData)>\r\n"
-      output: 'spades: 1 -> 4
-
-        diamonds: 1
-
-        diamonds: 3 -> 5
-
-        hearts:
-        1
-
-        hearts: 4
-
-        clubs: 4
-
-        spades: 2 -> 3
-
-        diamonds:
-        3
-
-        diamonds: 5
-
-'
+      duration: 0.0534661
+      messages: "  Expected is <System.Collections.Generic.List`1[System.Collections.Generic.List`1[CardData]]>
+        with 3 elements, actual is <System.Collections.Generic.List`1[System.Collections.Generic.List`1[CardData]]>
+        with 0 elements\r\n  Values differ at index [0]\r\n  Missing:  < < < (CardData)>,
+        < (CardData)>, < (CardData)> >, < < (CardData)>, < (CardData)>, < (CardData)>
+        >, < < (CardData)>, < (CardData)>, < (CardData)> > >"
+      output: 
       stacktrace: 'at NUnit.Framework.CollectionAssert.AreEqual (System.Collections.IEnumerable
         expected, System.Collections.IEnumerable actual, System.String message, System.Object[]
         args) [0x00008] in <10b6135e63434fdba4fc6c109928ab3b>:0
@@ -588,10 +568,10 @@ MonoBehaviour:
         actual) [0x00001] in <10b6135e63434fdba4fc6c109928ab3b>:0
 
         at DeckPlayer.Tests.SortTests+<SmartSort>d__2.MoveNext
-        () [0x00397] in G:\Work\PersonalWork\deck-player\Assets\_deck-player\Tests\PlayMode\SortTest.cs:278
+        () [0x0023a] in G:\Work\PersonalWork\deck-player\Assets\_deck-player\Tests\PlayMode\SortTest.cs:278
 
         at
-        UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e]
+        UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a]
         in G:\Work\PersonalWork\deck-player\Library\PackageCache\com.unity.test-framework@1.1.31\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:46
 
 '
@@ -620,20 +600,18 @@ MonoBehaviour:
       - Uncategorized
       parentId: 1001
       parentUniqueId: PlayMode.dll/DeckPlayer/Tests/[PlayMode][DeckPlayer.Tests.SortTests][suite]
-    m_ResultText: "SmartSort (0.617s)\n---\nExpected and actual are both <System.Collections.Generic.List`1[System.Collections.Generic.List`1[CardData]]>
-      with 3 elements\r\n  Values differ at index [0]\r\n    Expected is <System.Collections.Generic.List`1[CardData]>
-      with 3 elements, actual is <System.Collections.Generic.List`1[CardData]> with
-      4 elements\r\n    Values differ at index [0]\r\n  Expected: < (CardData)>\r\n 
-      But was:  < (CardData)>\n---\nat NUnit.Framework.CollectionAssert.AreEqual
+    m_ResultText: "SmartSort (0.053s)\n---\nExpected is <System.Collections.Generic.List`1[System.Collections.Generic.List`1[CardData]]>
+      with 3 elements, actual is <System.Collections.Generic.List`1[System.Collections.Generic.List`1[CardData]]>
+      with 0 elements\r\n  Values differ at index [0]\r\n  Missing:  < < < (CardData)>,
+      < (CardData)>, < (CardData)> >, < < (CardData)>, < (CardData)>, < (CardData)>
+      >, < < (CardData)>, < (CardData)>, < (CardData)> > >\n---\nat NUnit.Framework.CollectionAssert.AreEqual
       (System.Collections.IEnumerable expected, System.Collections.IEnumerable actual,
       System.String message, System.Object[] args) [0x00008] in <10b6135e63434fdba4fc6c109928ab3b>:0\r\nat
       NUnit.Framework.CollectionAssert.AreEqual (System.Collections.IEnumerable expected,
       System.Collections.IEnumerable actual) [0x00001] in <10b6135e63434fdba4fc6c109928ab3b>:0\r\nat
-      DeckPlayer.Tests.SortTests+<SmartSort>d__2.MoveNext () [0x00397] in G:\\Work\\PersonalWork\\deck-player\\Assets\\_deck-player\\Tests\\PlayMode\\SortTest.cs:278\r\nat
-      UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in
-      G:\\Work\\PersonalWork\\deck-player\\Library\\PackageCache\\com.unity.test-framework@1.1.31\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:46\n---\nspades:
-      1 -> 4\r\ndiamonds: 1\r\ndiamonds: 3 -> 5\r\nhearts: 1\r\nhearts: 4\r\nclubs:
-      4\r\nspades: 2 -> 3\r\ndiamonds: 3\r\ndiamonds: 5"
+      DeckPlayer.Tests.SortTests+<SmartSort>d__2.MoveNext () [0x0023a] in G:\\Work\\PersonalWork\\deck-player\\Assets\\_deck-player\\Tests\\PlayMode\\SortTest.cs:278\r\nat
+      UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in
+      G:\\Work\\PersonalWork\\deck-player\\Library\\PackageCache\\com.unity.test-framework@1.1.31\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:46"
     m_ResultStacktrace: 'at NUnit.Framework.CollectionAssert.AreEqual (System.Collections.IEnumerable
       expected, System.Collections.IEnumerable actual, System.String message, System.Object[]
       args) [0x00008] in <10b6135e63434fdba4fc6c109928ab3b>:0
@@ -643,10 +621,10 @@ MonoBehaviour:
       [0x00001] in <10b6135e63434fdba4fc6c109928ab3b>:0
 
       at DeckPlayer.Tests.SortTests+<SmartSort>d__2.MoveNext
-      () [0x00397] in G:\Work\PersonalWork\deck-player\Assets\_deck-player\Tests\PlayMode\SortTest.cs:278
+      () [0x0023a] in G:\Work\PersonalWork\deck-player\Assets\_deck-player\Tests\PlayMode\SortTest.cs:278
 
       at
-      UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e] in
+      UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in
       G:\Work\PersonalWork\deck-player\Library\PackageCache\com.unity.test-framework@1.1.31\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:46
 
 '
@@ -995,10 +973,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 485
+    x: 2923
     y: 73
-    width: 1178
-    height: 910
+    width: 883
+    height: 654
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1009,7 +987,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1178, y: 663}
+  m_TargetSize: {x: 883, y: 497}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1024,10 +1002,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -589
-    m_HBaseRangeMax: 589
-    m_VBaseRangeMin: -331.5
-    m_VBaseRangeMax: 331.5
+    m_HBaseRangeMin: -441.5
+    m_HBaseRangeMax: 441.5
+    m_VBaseRangeMin: -248.5
+    m_VBaseRangeMax: 248.5
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1036,7 +1014,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -1045,23 +1023,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 1178
-      height: 889
+      width: 883
+      height: 633
     m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 589, y: 444.5}
+    m_Translation: {x: 441.5, y: 316.5}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -589
-      y: -444.5
-      width: 1178
-      height: 889
+      x: -441.5
+      y: -316.5
+      width: 883
+      height: 633
     m_MinimalGUI: 1
   m_defaultScale: 1
-  m_LastWindowPixelSize: {x: 1178, y: 910}
+  m_LastWindowPixelSize: {x: 883, y: 654}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000100000000000000
@@ -1087,10 +1065,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 0
+    x: 2560
     y: 73
-    width: 484
-    height: 910
+    width: 362
+    height: 654
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1414,10 +1392,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1665
+    x: 3808
     y: 73
-    width: 173
-    height: 910
+    width: 129
+    height: 654
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1427,7 +1405,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 4666fdff9666fdff6668fdff6e76fdffbe76fdffa278fdff4a7efdff9a7efdff6a80fdff4887fdff9887fdff8e89fdff468ffdff968ffdff6691fdffbaa3fdff0aa4fdfff2a5fdffbaaafdff0aabfdffdaacfdffbaaefdff0aaffdfff8b0fdffdcbbfdff2cbcfdfffcbdfdff14eafdff64eafdff34ecfdffd6f9fdff26fafdff0cfcfdff9c07feffec07feffea09feffd40bfeff240cfeff0a0efeff8a11feffda11feffc013feff8816feffd816feffbe18feff9a1afeffea1afeffd01cfeff961ffeffe61ffeffcc21feffb023feff0024feffe625feff8629feffb631feff2035feff1e38feff0e3bfeff4a3efeff5440feff3844feff8844feff5846feffd649feff264afefff64bfeff1c57feff6c57feff2659feff165ffeff665ffeff3461feffec66feffda6afeffe06cfeffe26efefff670fefff072feff4675feff6677feff6c79feff847bfeff8e7dfeff8c7ffeff8a81feffb887feff0888feffd889feff3a8ffeff8a8ffeff5a91feff3493feff8493feff5495feff8a98feffda98feffaa9afeff76a5feffc6a5feff96a7feffa4aafefff4aafeffc4acfeff92b1feffe2b1feffb2b3feff64b7feffb4b7feff84b9feffe2c0feff32c1feff02c3feffdcc4feff2cc5fefffcc6feffd6c8feff26c9fefff6cafeffd2ccfeff22cdfefff2cefeffced0feff1ed1feffeed2feffdad4feff2ad5fefffad6feffd4d8feff24d9fefff8dafefff8ddfeff48defeff18e0fefff4e1feff44e2feff14e4feffeee5feff3ee6feff0ee8feff764dffffc64dffff804fffff9852ffffe852ffffa254ffff7c56ffffcc56ffff8658ffffa685fffff685ffffb087ffff3a97ffff4aabffff9aabffff58adffff4ac4ffffd4aa0000
+      m_ExpandedIDs: 3ef6ffff8ef6ffff64f8ffff1cfbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1471,10 +1449,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1840
+    x: 3939
     y: 73
-    width: 195
-    height: 910
+    width: 147
+    height: 654
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1505,7 +1483,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 785b0000
     m_LastClickedID: 23416
-    m_ExpandedIDs: 0000000040960000429600004496000046960000489600004a9600004c9600004e96000050960000529600005496000056960000589600005a9600005c9600005e96000060960000629600006496000066960000
+    m_ExpandedIDs: 0000000050620000526200005462000056620000586200005a6200005c6200005e62000060620000626200006462000066620000686200006a6200006c6200006e62000070620000726200007462000076620000786200007a620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1533,21 +1511,21 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffff00000000409600004296000044960000489600004a9600004c9600004e960000509600005296000054960000569600005a9600005c9600005e9600006696000098960000a89600006c97000072970000749700008097000052280100ffffff7f
+    m_ExpandedIDs: ffffffff0000000050620000526200005462000056620000586200005a6200005c6200005e62000060620000626200006462000066620000686200006a6200006c6200006e62000070620000726200007462000076620000786200007a620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: SortTest
-      m_OriginalName: SortTest
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 32750
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 13}
     m_SearchString: 
@@ -1609,10 +1587,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 0
-    y: 1004
-    width: 2036
-    height: 355
+    x: 2560
+    y: 748
+    width: 1527
+    height: 251
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -2575,10 +2553,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2037
+    x: 4088
     y: 73
-    width: 522
-    height: 681
+    width: 391
+    height: 488
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
