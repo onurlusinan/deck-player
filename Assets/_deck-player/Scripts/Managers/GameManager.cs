@@ -2,9 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using DG.Tweening;
-using DeckPlayer.CardSystem;
 using System.Collections.Generic;
-using System;
 using DeckPlayer.Helpers;
 
 namespace DeckPlayer.Managers
@@ -59,7 +57,7 @@ namespace DeckPlayer.Managers
         {
             overlay.ShowOverlay(false, 0.5f, () =>
                 {
-                    StartCoroutine(CardManager.Instance.DrawTestCards(() =>
+                    StartCoroutine(CardManager.Instance.CreateTestCards(() =>
                         EnableInput(true)
                     ));
                 }
@@ -79,7 +77,7 @@ namespace DeckPlayer.Managers
                             deckInput = enable
                 );
         }
-
+        #region UI-Buttons
         public void BackButton()
         {
             overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.menu));
@@ -94,6 +92,7 @@ namespace DeckPlayer.Managers
         {
             CardManager.Instance.ChangeCardsTheme();
         }
+        #endregion
 
         #region Sort-Buttons
 
@@ -107,6 +106,7 @@ namespace DeckPlayer.Managers
                     )
                 );
         }
+
         public void TripleSevenSortButton()
         {
             EnableInput(false);
@@ -117,6 +117,7 @@ namespace DeckPlayer.Managers
                     )
                 );
         }
+
         public void SmartSortButton()
         {
             EnableInput(false);

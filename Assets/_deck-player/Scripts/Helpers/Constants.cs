@@ -8,5 +8,6 @@
         // ints & floats
         public const int oneTwoThreeSortMinAmount = 3;
         public const float cardDrawDuration = 0.25f;
+        public const float cardDrawDelay = 0.1f;
     }
 }

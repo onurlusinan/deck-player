@@ -56,9 +56,6 @@ namespace DeckPlayer.Managers
 
             Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
 
-            WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
-
-
             List<int> uniqueRandomList = Helpers.GenerateRandomUniqueIntegers(initialCardAmount, 52);
 
             int randomIndex;
@@ -71,33 +68,27 @@ namespace DeckPlayer.Managers
 
                 newCard.transform.SetParent(cardSlot.transform, false);
 
+                RectTransform cardRect = newCard.GetComponent<RectTransform>();
+                cardRect.anchoredPosition = initialCardOffset;
+
                 // set current card slot
                 newCard.currentSlot = cardSlot;
                 cardSlot.currentCard = newCard;
-            
-                // draw animation
-                RectTransform cardRect = newCard.GetComponent<RectTransform>();
-                cardRect.anchoredPosition = initialCardOffset;
-                cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, Constants.cardDrawDuration).SetEase(Ease.OutExpo);
-
-                if(SoundManager.Instance)
-                    SoundManager.Instance.Play(Sounds.cardDraw);
-
-                yield return cardDrawDelay;
             }
 
+            yield return StartCoroutine(PreSortLists());
+            yield return StartCoroutine(DrawCards());
+
             OnComplete?.Invoke();
-            PreSortLists();
         }
 
         /// <summary>
         /// Draws the test cards specified in the inspector
         /// </summary>
         /// <param name="OnComplete"> OnComplete is called after the method </param>
-        public IEnumerator DrawTestCards(Action OnComplete = null)
+        public IEnumerator CreateTestCards(Action OnComplete = null)
         {
             Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
-            WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
 
             for (int i = 0; i < initialCardAmount; i++)
             {
@@ -106,23 +97,18 @@ namespace DeckPlayer.Managers
 
                 newCard.transform.SetParent(cardSlot.transform, false);
 
+                RectTransform cardRect = currentCards[i].GetComponent<RectTransform>();
+                cardRect.anchoredPosition = initialCardOffset;
+
                 // set current card slot
                 newCard.currentSlot = cardSlot;
                 cardSlot.currentCard = newCard;
-
-                // draw animation
-                RectTransform cardRect = newCard.GetComponent<RectTransform>();
-                cardRect.anchoredPosition = initialCardOffset;
-                cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, Constants.cardDrawDuration).SetEase(Ease.OutExpo);
-
-                if (SoundManager.Instance)
-                    SoundManager.Instance.Play(Sounds.cardDraw);
-
-                yield return cardDrawDelay;
             }
 
+            yield return StartCoroutine(PreSortLists());
+            yield return StartCoroutine(DrawCards());
+
             OnComplete?.Invoke();
-            PreSortLists();
         }
 
         /// <summary>
@@ -136,6 +122,23 @@ namespace DeckPlayer.Managers
             currentCards.Add(card);
             card.InitCard(cardData);
             return card;
+        }
+
+        private IEnumerator DrawCards()
+        {
+            WaitForSeconds cardDrawDelay = new WaitForSeconds(Constants.cardDrawDelay);
+
+            for (int i = 0; i < currentCards.Count; i++)
+            {
+                // draw animation
+                RectTransform cardRect = currentCards[i].GetComponent<RectTransform>();
+                cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, Constants.cardDrawDuration).SetEase(Ease.OutExpo);
+
+                if (SoundManager.Instance)
+                    SoundManager.Instance.Play(Sounds.cardDraw);
+
+                yield return cardDrawDelay;
+            }
         }
         #endregion
 
@@ -165,7 +168,7 @@ namespace DeckPlayer.Managers
 
         #region SORTING
 
-        public void PreSortLists()
+        public IEnumerator PreSortLists()
         {
             List<CardData> listOfCards = new List<CardData>();
             foreach (Card card in currentCards)
@@ -174,6 +177,8 @@ namespace DeckPlayer.Managers
             oneTwoThreeSortResult = OneTwoThreeSort(listOfCards);
             tripleSevenSortResult = TripleSevenSort(listOfCards);
             smartSortResult = SmartSort(listOfCards);
+
+            yield return new WaitForSeconds(0.25f);
         }
 
         /// <summary>
