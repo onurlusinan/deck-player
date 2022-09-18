@@ -124,7 +124,8 @@ namespace DeckPlayer.Managers
                                 card.transform.localPosition = Vector3.zero
                 );
 
-            SoundManager.Instance.Play(Sounds.cardSwoosh);
+            if (SoundManager.Instance)
+                SoundManager.Instance.Play(Sounds.cardSwoosh);
 
             settingCard = false;
         }

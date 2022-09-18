@@ -82,7 +82,8 @@ public class CardManager : MonoBehaviour
             cardRect.anchoredPosition = initialCardOffset;
             cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.25f).SetEase(Ease.OutExpo);
 
-            SoundManager.Instance.Play(Sounds.cardDraw);
+            if(SoundManager.Instance)
+                SoundManager.Instance.Play(Sounds.cardDraw);
 
             yield return cardDrawDelay;
         }
@@ -97,7 +98,7 @@ public class CardManager : MonoBehaviour
 
         for (int i = 0; i < initialCardAmount; i++)
         {
-            Card newCard = CreateCard(TestManager.Instance.testInputCardDatas[i]);
+            Card newCard = CreateCard(GameManager.Instance.testInputCardDatas[i]);
             CardSlot cardSlot = DeckManager.Instance.GetCardSlot(i).GetComponent<CardSlot>();
 
             newCard.transform.SetParent(cardSlot.transform, false);
@@ -111,7 +112,8 @@ public class CardManager : MonoBehaviour
             cardRect.anchoredPosition = initialCardOffset;
             cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.25f).SetEase(Ease.OutExpo);
 
-            SoundManager.Instance.Play(Sounds.cardDraw);
+            if (SoundManager.Instance)
+                SoundManager.Instance.Play(Sounds.cardDraw);
 
             yield return cardDrawDelay;
         }
@@ -400,6 +402,12 @@ public class CardManager : MonoBehaviour
                 foreach (CardData cardData in tempLeftoverList)
                     leftovers.Add(cardData);
             }
+        }
+
+        if(sortedResultGroups.Count == 0)
+        {
+            leftovers.Clear();
+            leftovers = listOfCards;
         }
 
         return Tuple.Create(sortedResultGroups, leftovers);

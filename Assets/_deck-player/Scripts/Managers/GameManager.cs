@@ -5,6 +5,7 @@ using DG.Tweening;
 using DeckPlayer.CardSystem;
 using System.Collections.Generic;
 using System;
+using DeckPlayer.Helpers;
 
 namespace DeckPlayer.Managers
 {
@@ -19,6 +20,9 @@ namespace DeckPlayer.Managers
 
         public bool deckInput = false;
 
+        [Header("Testing Config")]
+        public List<CardData> testInputCardDatas;
+
         private void Awake()
         {
             if (Instance == null)
@@ -29,10 +33,15 @@ namespace DeckPlayer.Managers
 
         private void Start()
         {
-            if (!TestManager.Instance.isTesting)
+            if (!PlayerPrefs.HasKey(Constants.usingTestCase))
                 StartGame();
             else
-                TestGame();
+            {
+                if (PlayerPrefs.GetInt(Constants.usingTestCase) == 0)
+                    StartGame();
+                else
+                    TestGame();
+            }
         }
 
         private void StartGame()
@@ -62,7 +71,7 @@ namespace DeckPlayer.Managers
             controlPanel.GetComponent<CanvasGroup>().interactable = enable;
 
             if (enable)
-                controlPanel.DOAnchorPosY(100f, 0.3f).SetEase(Ease.OutExpo).OnComplete(() =>
+                controlPanel.DOAnchorPosY(50f, 0.3f).SetEase(Ease.OutExpo).OnComplete(() =>
                             deckInput = enable
                 );
             else
@@ -75,10 +84,12 @@ namespace DeckPlayer.Managers
         {
             overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.menu));
         }
+
         public void RestartButton()
         {
             overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.game));
         }
+
         public void RandomThemeButton()
         {
             CardManager.Instance.ChangeCardsTheme();

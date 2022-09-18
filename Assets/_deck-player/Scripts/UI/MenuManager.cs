@@ -1,35 +1,38 @@
-using System;
-using System.Collections;
+using DeckPlayer.Helpers;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-using DG.Tweening;
-
-public enum SceneType
-{ 
-    menu = 0,
-    game = 1
-}
-
-public class MenuManager : MonoBehaviour
+namespace DeckPlayer.Managers
 {
-    public Overlay overlay;
-
-    private void Start()
+    public enum SceneType
     {
-        StartCoroutine(InitializeMenu());
+        menu = 0,
+        game = 1
     }
 
-    private IEnumerator InitializeMenu()
+    public class MenuManager : MonoBehaviour
     {
-        yield return new WaitForSeconds(0.25f);
-        overlay.ShowOverlay(false, 0f);
-    }
+        public Overlay overlay;
 
+        private void Start()
+        {
+            overlay.ShowOverlay(false, 0.25f);
+        }
 
-    public void StartButton()
-    {
-        overlay.ShowOverlay(true, 0f, () => SceneManager.LoadScene((int)SceneType.game));
+        public void DrawRandomCardsButton()
+        {
+            PlayerPrefs.SetInt(Constants.usingTestCase, 0);
+
+            overlay.ShowOverlay(true, 0f, () =>
+                SceneManager.LoadScene((int)SceneType.game));
+        }
+
+        public void UseSampleCaseButton()
+        {
+            PlayerPrefs.SetInt(Constants.usingTestCase, 1);
+
+            overlay.ShowOverlay(true, 0f, () =>
+                SceneManager.LoadScene((int)SceneType.game));
+        }
     }
 }
