@@ -704,7 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77173f3558dfd8a40ace46ec3a672a3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTesting: 1
+  isTesting: 0
   testInputCardDatas:
   - {fileID: 11400000, guid: 3498e9543a314a244b2101188db97312, type: 2}
   - {fileID: 11400000, guid: fae2950616ae4d74699be16caadae171, type: 2}
@@ -1047,6 +1047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animated: 1
+  sound: 1
 --- !u!114 &377932859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1289,6 +1290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animated: 1
+  sound: 1
 --- !u!1001 &442097674
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1543,6 +1545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animated: 1
+  sound: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3436,6 +3439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animated: 1
+  sound: 1
 --- !u!1001 &1601580287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3690,6 +3694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animated: 1
+  sound: 1
 --- !u!1 &1667487597
 GameObject:
   m_ObjectHideFlags: 0
@@ -4447,6 +4452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animated: 1
+  sound: 1
 --- !u!114 &2096334996
 MonoBehaviour:
   m_ObjectHideFlags: 0

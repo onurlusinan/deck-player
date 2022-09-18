@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CardSwoosh
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: a62c8f212e1e5664fb5ea7fda19bf474, type: 3}
-  volume: 0.35
+  volume: 0.25
   pitch: 1
   randomPitch: 1
   AudioName: cardSwoosh

@@ -254,8 +254,8 @@ namespace DeckPlayer.Tests
 
             List<CardData> value4List = new List<CardData>
             {
-                spades4,
                 hearts4,
+                clubs4,
                 spades4
             };
             expectedValueGroups.Add(value4List);
@@ -268,8 +268,8 @@ namespace DeckPlayer.Tests
             };
             expectedValueGroups.Add(diamondsList);
 
-            expectedLeftovers.Add(diamonds1);
             expectedLeftovers.Add(hearts1);
+            expectedLeftovers.Add(diamonds1);
             #endregion
 
             // use the algorithm
