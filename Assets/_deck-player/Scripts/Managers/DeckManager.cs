@@ -1,10 +1,11 @@
 using System.Collections.Generic;
-using UnityEngine;
-
-using DeckPlayer.CardSystem;
-using DG.Tweening;
 using System;
 using System.Collections;
+using DeckPlayer.CardSystem;
+
+using UnityEngine;
+using DG.Tweening;
+
 using DeckPlayer.Audio;
 
 namespace DeckPlayer.Managers
@@ -61,6 +62,9 @@ namespace DeckPlayer.Managers
             return cardSlots[index];
         }
 
+        /// <summary>
+        /// Sorts the card transforms based on the sorting results
+        /// </summary>
         public IEnumerator SortCardsFromList(Tuple<List<List<CardData>>, List<CardData>> listsTuple)
         {
             for(int i = 0; i < cardSlots.Count; i++)
@@ -101,6 +105,11 @@ namespace DeckPlayer.Managers
             GameManager.Instance.EnableInput(true);
         }
 
+        /// <summary>
+        /// Sets the Card transform to the specified slot
+        /// </summary>
+        /// <param name="isSortMode"> Set to be true if using while sorting, not when player input driven card movement </param>
+        /// <param name="sortGroupHeight"> The group height card moves to when sorting </param>
         public void SetCardToSlot(Card card, CardSlot cardSlot, float duration, bool isSortMode = false, float sortGroupHeight = 0)
         {
             if (cardSlot.currentCard && !isSortMode)

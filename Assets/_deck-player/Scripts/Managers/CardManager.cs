@@ -1,432 +1,451 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 
 using DeckPlayer.CardSystem;
-using DG.Tweening;
-using DeckPlayer.Managers;
-using System.Linq;
 using DeckPlayer.Audio;
+using DeckPlayer.Helpers;
 
-struct CardGroupSumInfo
+namespace DeckPlayer.Managers
 {
-    public List<CardData> cardGroup;
-    public int sumOfValues;
-}
-
-public class CardManager : MonoBehaviour
-{
-    public static CardManager Instance;
-
-    [Header("CardManager Config")]
-    public float initialCardPosOffsetY = -600f;
-    public float cardDrawDelay = 0.2f;
-    public GameObject cardPrefab;
-    public List<Card> currentCards; // 11 cards
-
-    private int initialCardAmount = 11;
-    private CardDataCollection cardCollection; // 52 card datas
-    public Dictionary<CardData, Card> cardDict = new Dictionary<CardData, Card>();
-
-    private CardTheme _currentTheme = CardTheme.white;
-
-    private void Awake()
+    public class CardManager : MonoBehaviour
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
+        public static CardManager Instance;
 
-        // Load card data collection
-        cardCollection = Resources.Load<CardDataCollection>("CardData/CardDataCollection");
-    }
+        [Header("CardManager Config")]
+        public float initialCardPosOffsetY = -600f;
+        public float cardDrawDelay = 0.2f;
+        public GameObject cardPrefab;
+        public List<Card> currentCards; // 11 cards
 
-    #region CARD-CREATION
-    /// <summary>
-    /// Draws random cards as much as the initialCardAmount
-    /// </summary>
-    public IEnumerator DrawRandomCards(Action OnComplete = null)
-    {
-        CardData[] collection = cardCollection.GetCollection();
-        int collectionAmount = collection.Length;
+        private int initialCardAmount = 11;
+        private CardDataCollection cardCollection; // 52 card datas
+        public Dictionary<CardData, Card> cardDict = new Dictionary<CardData, Card>();
 
-        Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
+        private CardTheme _currentTheme = CardTheme.white;
 
-        WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
-
-
-        List<int> uniqueRandomList = GenerateRandomUniqueIntegers(initialCardAmount, 52);
-
-        int randomIndex;
-
-        for (int i = 0; i < initialCardAmount; i++)
+        private void Awake()
         {
-            randomIndex = uniqueRandomList[i];
-            Card newCard = CreateCard(collection[randomIndex]);
-            CardSlot cardSlot = DeckManager.Instance.GetCardSlot(i).GetComponent<CardSlot>();
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
 
-            newCard.transform.SetParent(cardSlot.transform, false);
-
-            // set current card slot
-            newCard.currentSlot = cardSlot;
-            cardSlot.currentCard = newCard;
-            
-            // draw animation
-            RectTransform cardRect = newCard.GetComponent<RectTransform>();
-            cardRect.anchoredPosition = initialCardOffset;
-            cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.25f).SetEase(Ease.OutExpo);
-
-            if(SoundManager.Instance)
-                SoundManager.Instance.Play(Sounds.cardDraw);
-
-            yield return cardDrawDelay;
+            // Load card data collection
+            cardCollection = Resources.Load<CardDataCollection>("CardData/CardDataCollection");
         }
 
-        OnComplete?.Invoke();
-    }
+        #region CARD-CREATION & CARD-DRAWING
 
-    public IEnumerator DrawTestCards(Action OnComplete = null)
-    {
-        Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
-        WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
-
-        for (int i = 0; i < initialCardAmount; i++)
+        /// <summary>
+        /// Draws random cards as much as the initialCardAmount
+        /// </summary>
+        /// <param name="OnComplete"> OnComplete is called after the method </param>
+        public IEnumerator DrawRandomCards(Action OnComplete = null)
         {
-            Card newCard = CreateCard(GameManager.Instance.testInputCardDatas[i]);
-            CardSlot cardSlot = DeckManager.Instance.GetCardSlot(i).GetComponent<CardSlot>();
+            CardData[] collection = cardCollection.GetCollection();
+            int collectionAmount = collection.Length;
 
-            newCard.transform.SetParent(cardSlot.transform, false);
+            Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
 
-            // set current card slot
-            newCard.currentSlot = cardSlot;
-            cardSlot.currentCard = newCard;
+            WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
 
-            // draw animation
-            RectTransform cardRect = newCard.GetComponent<RectTransform>();
-            cardRect.anchoredPosition = initialCardOffset;
-            cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, 0.25f).SetEase(Ease.OutExpo);
 
-            if (SoundManager.Instance)
-                SoundManager.Instance.Play(Sounds.cardDraw);
+            List<int> uniqueRandomList = GenerateRandomUniqueIntegers(initialCardAmount, 52);
 
-            yield return cardDrawDelay;
-        }
+            int randomIndex;
 
-        OnComplete?.Invoke();
-    }
-
-    /// <summary>
-    /// Creates and initiates card from card data
-    /// </summary>
-    private Card CreateCard(CardData cardData)
-    {
-        GameObject cardObject = Instantiate(cardPrefab);
-        Card card = cardObject.GetComponent<Card>();
-        cardDict.Add(cardData, card);
-        currentCards.Add(card);
-        card.InitCard(cardData);
-        return card;
-    }
-
-    private static List<int> GenerateRandomUniqueIntegers(int amount, int maxValue)
-    {
-        List<int> randomList = new List<int>(amount);
-
-        for (int i = 0; i < amount; i++)
-        {
-            int numToAdd = UnityEngine.Random.Range(0, maxValue);
-
-            while (randomList.Contains(numToAdd))
-                numToAdd = UnityEngine.Random.Range(0, maxValue);
-
-            randomList.Add(numToAdd);
-        }
-
-        return randomList;
-    }
-    #endregion
-
-    #region CARD-THEMES
-
-    public void ChangeCardsTheme()
-    {
-        Array values = Enum.GetValues(typeof(CardTheme));
-
-        System.Random random = new System.Random();
-        CardTheme randomTheme = (CardTheme)values.GetValue(random.Next(values.Length));
-
-        if(_currentTheme != randomTheme)
-        {
-            foreach (Card card in currentCards)
-                card.ChangeTheme(randomTheme);
-
-            _currentTheme = randomTheme;
-        }
-        else
-            ChangeCardsTheme();
-    }
-
-    #endregion
-
-    #region SORTING
-    /// <summary>
-    /// Finds the cards with consecutive values in a card list sorted by value
-    /// </summary>
-    /// <param name="sortedCardList"> Has to be sorted </param>
-    /// <returns> Tuple of the result and leftovers </returns>
-    private static Tuple<List<List<CardData>>, List<CardData>> FindConsecutiveCards(List<CardData> sortedCardList)
-    {
-        List<List<CardData>> consecutiveLists = sortedCardList.Select((item, idx) => new { I = item, G = item.value - idx })
-                                                          .Distinct()
-                                                          .GroupBy( ig => ig.G,
-                                                                    ig => ig.I,
-                                                                    (k, g) => g.ToList()).ToList();
-        List<List<CardData>> resultLists = new List<List<CardData>>();
-        List<CardData> leftovers = new List<CardData>();
-
-        for (int i = 0; i < consecutiveLists.Count; i++)
-        {
-            if (consecutiveLists[i].Count >= 3)
+            for (int i = 0; i < initialCardAmount; i++)
             {
-                resultLists.Add(consecutiveLists[i]);
+                randomIndex = uniqueRandomList[i];
+                Card newCard = CreateCard(collection[randomIndex]);
+                CardSlot cardSlot = DeckManager.Instance.GetCardSlot(i).GetComponent<CardSlot>();
+
+                newCard.transform.SetParent(cardSlot.transform, false);
+
+                // set current card slot
+                newCard.currentSlot = cardSlot;
+                cardSlot.currentCard = newCard;
+            
+                // draw animation
+                RectTransform cardRect = newCard.GetComponent<RectTransform>();
+                cardRect.anchoredPosition = initialCardOffset;
+                cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, Constants.cardDrawDuration).SetEase(Ease.OutExpo);
+
+                if(SoundManager.Instance)
+                    SoundManager.Instance.Play(Sounds.cardDraw);
+
+                yield return cardDrawDelay;
+            }
+
+            OnComplete?.Invoke();
+        }
+
+        /// <summary>
+        /// Draws the test cards specified in the inspector
+        /// </summary>
+        /// <param name="OnComplete"> OnComplete is called after the method </param>
+        public IEnumerator DrawTestCards(Action OnComplete = null)
+        {
+            Vector3 initialCardOffset = new Vector3(0f, initialCardPosOffsetY, 0f);
+            WaitForSeconds cardDrawDelay = new WaitForSeconds(0.1f);
+
+            for (int i = 0; i < initialCardAmount; i++)
+            {
+                Card newCard = CreateCard(GameManager.Instance.testInputCardDatas[i]);
+                CardSlot cardSlot = DeckManager.Instance.GetCardSlot(i).GetComponent<CardSlot>();
+
+                newCard.transform.SetParent(cardSlot.transform, false);
+
+                // set current card slot
+                newCard.currentSlot = cardSlot;
+                cardSlot.currentCard = newCard;
+
+                // draw animation
+                RectTransform cardRect = newCard.GetComponent<RectTransform>();
+                cardRect.anchoredPosition = initialCardOffset;
+                cardRect.GetComponent<RectTransform>().DOAnchorPosY(0f, Constants.cardDrawDuration).SetEase(Ease.OutExpo);
+
+                if (SoundManager.Instance)
+                    SoundManager.Instance.Play(Sounds.cardDraw);
+
+                yield return cardDrawDelay;
+            }
+
+            OnComplete?.Invoke();
+        }
+
+        /// <summary>
+        /// Creates and initiates card from card data
+        /// </summary>
+        private Card CreateCard(CardData cardData)
+        {
+            GameObject cardObject = Instantiate(cardPrefab);
+            Card card = cardObject.GetComponent<Card>();
+            cardDict.Add(cardData, card);
+            currentCards.Add(card);
+            card.InitCard(cardData);
+            return card;
+        }
+
+        private static List<int> GenerateRandomUniqueIntegers(int amount, int maxValue)
+        {
+            List<int> randomList = new List<int>(amount);
+
+            for (int i = 0; i < amount; i++)
+            {
+                int numToAdd = UnityEngine.Random.Range(0, maxValue);
+
+                while (randomList.Contains(numToAdd))
+                    numToAdd = UnityEngine.Random.Range(0, maxValue);
+
+                randomList.Add(numToAdd);
+            }
+
+            return randomList;
+        }
+        #endregion
+
+        #region CARD-THEMES
+        /// <summary>
+        /// Changes all cards' theme (color)
+        /// </summary>
+        public void ChangeCardsTheme()
+        {
+            Array values = Enum.GetValues(typeof(CardTheme));
+
+            System.Random random = new System.Random();
+            CardTheme randomTheme = (CardTheme)values.GetValue(random.Next(values.Length));
+
+            if(_currentTheme != randomTheme)
+            {
+                foreach (Card card in currentCards)
+                    card.ChangeTheme(randomTheme);
+
+                _currentTheme = randomTheme;
             }
             else
-                leftovers.AddRange(consecutiveLists[i]);
+                ChangeCardsTheme();
         }
 
-        return Tuple.Create(resultLists, leftovers);
-    }
+        #endregion
 
-    /// <summary>
-    /// The OneTwoThree Sort
-    /// </summary>
-    public static Tuple<List<List<CardData>>, List<CardData>> OneTwoThreeSort(List<CardData> listOfCards)
-    {
-        List<CardData> sortedResult = new List<CardData>();
-        List<CardData> leftovers = new List<CardData>();
-
-        // group same card suits
-        List<CardData> spades = new List<CardData>();
-        List<CardData> diamonds = new List<CardData>();
-        List<CardData> hearts = new List<CardData>();
-        List<CardData> clubs = new List<CardData>();
-            
-
-        for(int i = 0; i < listOfCards.Count; i++)
+        #region SORTING
+        /// <summary>
+        /// Sorts by consecutive values and same card suits
+        /// </summary>
+        public static Tuple<List<List<CardData>>, List<CardData>> OneTwoThreeSort(List<CardData> listOfCards)
         {
-            CardSuit currentSuit = listOfCards[i].cardSuit;
+            List<CardData> sortedResult = new List<CardData>();
+            List<CardData> leftovers = new List<CardData>();
 
-            if (currentSuit == CardSuit.spades)
-                spades.Add(listOfCards[i]);
-            else if (currentSuit == CardSuit.diamonds)
-                diamonds.Add(listOfCards[i]);
-            else if (currentSuit == CardSuit.hearts)
-                hearts.Add(listOfCards[i]);
-            else if (currentSuit == CardSuit.clubs)
-                clubs.Add(listOfCards[i]);
-        }
-
-        // find consecutive numbers in groups (3 OR MORE)
-        spades = spades.OrderBy(Card => Card.value).ToList();
-        diamonds = diamonds.OrderBy(Card => Card.value).ToList();
-        hearts = hearts.OrderBy(Card => Card.value).ToList();
-        clubs = clubs.OrderBy(Card => Card.value).ToList();
-
-        Tuple<List<List<CardData>>, List<CardData>> resultTuple;
-        List<List<CardData>> sortedLists = new List<List<CardData>>();
-        List<CardData> currentConsecutiveList = new List<CardData>();
-
-        for(int i = 0; i < Enum.GetNames(typeof(CardSuit)).Length; i++)
-        {
-            CardSuit cardSuit = (CardSuit)i;
+            // group same card suits
+            List<CardData> spades = new List<CardData>();
+            List<CardData> diamonds = new List<CardData>();
+            List<CardData> hearts = new List<CardData>();
+            List<CardData> clubs = new List<CardData>();
             
-            switch(cardSuit)
+            for(int i = 0; i < listOfCards.Count; i++)
             {
-                case CardSuit.spades:
-                    currentConsecutiveList = spades;
-                    break;
-                case CardSuit.diamonds:
-                    currentConsecutiveList = diamonds;
-                    break;
-                case CardSuit.hearts:
-                    currentConsecutiveList = hearts;
-                    break;
-                case CardSuit.clubs:
-                    currentConsecutiveList = clubs;
-                    break;
+                CardSuit currentSuit = listOfCards[i].cardSuit;
+
+                if (currentSuit == CardSuit.spades)
+                    spades.Add(listOfCards[i]);
+                else if (currentSuit == CardSuit.diamonds)
+                    diamonds.Add(listOfCards[i]);
+                else if (currentSuit == CardSuit.hearts)
+                    hearts.Add(listOfCards[i]);
+                else if (currentSuit == CardSuit.clubs)
+                    clubs.Add(listOfCards[i]);
             }
 
-            resultTuple = FindConsecutiveCards(currentConsecutiveList);
-            if (resultTuple.Item1.Count > 0)
-            foreach (List<CardData> sortedList in resultTuple.Item1)
-                    sortedLists.Add(sortedList);
-            leftovers.AddRange(resultTuple.Item2);
+            // find consecutive numbers in groups (3 OR MORE)
+            spades = spades.OrderBy(cardData => cardData.value).ToList();
+            diamonds = diamonds.OrderBy(cardData => cardData.value).ToList();
+            hearts = hearts.OrderBy(cardData => cardData.value).ToList();
+            clubs = clubs.OrderBy(cardData => cardData.value).ToList();
+
+            Tuple<List<List<CardData>>, List<CardData>> resultTuple;
+            List<List<CardData>> sortedLists = new List<List<CardData>>();
+            List<CardData> currentConsecutiveList = new List<CardData>();
+
+            for(int i = 0; i < Enum.GetNames(typeof(CardSuit)).Length; i++)
+            {
+                CardSuit cardSuit = (CardSuit)i;
+            
+                switch(cardSuit)
+                {
+                    case CardSuit.spades:
+                        currentConsecutiveList = spades;
+                        break;
+                    case CardSuit.diamonds:
+                        currentConsecutiveList = diamonds;
+                        break;
+                    case CardSuit.hearts:
+                        currentConsecutiveList = hearts;
+                        break;
+                    case CardSuit.clubs:
+                        currentConsecutiveList = clubs;
+                        break;
+                }
+
+                resultTuple = Helpers.FindConsecutiveCards(currentConsecutiveList, Constants.oneTwoThreeSortMinAmount);
+
+                if (resultTuple.Item1.Count > 0)
+                    foreach (List<CardData> sortedList in resultTuple.Item1)
+                        sortedLists.Add(sortedList);
+
+                // add the leftovers
+                leftovers.AddRange(resultTuple.Item2);
+            }
+
+            return Tuple.Create(sortedLists, leftovers);
         }
 
-        return Tuple.Create(sortedLists, leftovers);
-    }
+        /// <summary>
+        /// Sorts by same values but different card suits
+        /// </summary>
+        public static Tuple<List<List<CardData>>, List<CardData>> TripleSevenSort(List<CardData> listOfCards)
+        {
+            List<List<CardData>> sortedResultGroups = new List<List<CardData>>();
+            List<CardData> leftovers = new List<CardData>();
 
-    /// <summary>
-    /// The triple seven sort
-    /// </summary>
-    /// <param name="listOfCards"></param>
-    /// <returns></returns>
-    public static Tuple<List<List<CardData>>, List<CardData>> TripleSevenSort(List<CardData> listOfCards)
-    {
-        List<List<CardData>> sortedResultGroups = new List<List<CardData>>();
-        List<CardData> leftovers = new List<CardData>();
+            List<CardData> tempList = listOfCards;
+            List<CardData> nonNumberedCards = tempList.Where(card => card.cardType != CardType.numbered && card.cardType != CardType.ace).ToList();
 
-        List<CardData> tempList = listOfCards;
-        List<CardData> nonNumberedCards = tempList.Where(card => card.cardType != CardType.numbered && card.cardType != CardType.ace).ToList();
+            foreach (CardData card in nonNumberedCards)
+                leftovers.Add(card);
 
-        foreach (CardData card in nonNumberedCards)
-            leftovers.Add(card);
+            tempList = tempList.Except(nonNumberedCards).ToList();
 
-        tempList = tempList.Except(nonNumberedCards).ToList();
+            // group same numbers to their respective groups
+            IEnumerable<List<CardData>> sameNumberCardGroups = tempList.GroupBy(cardData => cardData.value).Select(cardDataGroup => cardDataGroup.ToList()).ToList();
+            List<CardData> sortedGroup = new List<CardData>();
 
-        // group same numbers
-        IEnumerable<List<CardData>> sameNumberCardGroups = tempList.GroupBy(cardData => cardData.value).Select(cardDataGroup => cardDataGroup.ToList()).ToList();
-        List<CardData> sortedGroup = new List<CardData>();
-
-        foreach (List<CardData> group in sameNumberCardGroups)
-        {     
-    
+            foreach (List<CardData> group in sameNumberCardGroups)
+            {     
                 sortedGroup = group.GroupBy(cardData => cardData.cardSuit)
                                             .Select(cardSuit => cardSuit.First())
                                             .ToList();
 
-            if(sortedGroup.Count == 3 || sortedGroup.Count == 4)
-            {
-                sortedResultGroups.Add(sortedGroup);
-                leftovers.AddRange(group.Except(sortedGroup));
-            }
-            else
-                leftovers.AddRange(group);   
-        }
-
-        return Tuple.Create(sortedResultGroups, leftovers);
-    }
-
-    public static Tuple<List<List<CardData>>, List<CardData>> SmartSort(List<CardData> listOfCards)
-    {
-        List<List<CardData>> sortedResultGroups = new List<List<CardData>>();
-        List<List<CardData>> allSortedGroups = new List<List<CardData>>();
-        List<CardData> leftovers = new List<CardData>();
-
-        // First do a 1-2-3 sort, and 7-7-7 for it's leftovers
-        Tuple<List<List<CardData>>, List<CardData>> oneTwoThreeSort = OneTwoThreeSort(listOfCards);
-        Tuple<List<List<CardData>>, List<CardData>> extraTripleSevenTrios = TripleSevenSort(oneTwoThreeSort.Item2);
-
-        IEnumerable<IEnumerable<CardData>> oneTwoThreeCombinations = null;
-        foreach (List<CardData> cardGroup in oneTwoThreeSort.Item1)
-        {
-            if (cardGroup.Count > 3)
-                oneTwoThreeCombinations = cardGroup.GetOrderedSubEnumerables();
-
-            if (oneTwoThreeCombinations != null)
-                allSortedGroups.AddRange(oneTwoThreeCombinations.Select(i => i.ToList()).Where(list => list.Count >= 3).ToList());
-        }
-
-        // Then do a 7-7-7 sort, and 1-2-3 for it's leftovers
-        Tuple<List<List<CardData>>, List<CardData>> tripleSevenSort = TripleSevenSort(listOfCards);
-        Tuple<List<List<CardData>>, List<CardData>> extraOneTwoThreeForTrios = OneTwoThreeSort(tripleSevenSort.Item2);
-
-        IEnumerable<IEnumerable<CardData>> tripleSevenCombinations = null;
-        foreach (List<CardData> cardGroup in tripleSevenSort.Item1)
-        {
-            if (cardGroup.Count > 3)
-                tripleSevenCombinations = cardGroup.DifferentCombinations(3);
-            
-            if(tripleSevenCombinations != null)
-                allSortedGroups.AddRange(tripleSevenCombinations.Select(i => i.ToList()).ToList());
-        }
-
-        // If count of group is higher than 3 
-
-        allSortedGroups.AddRange(oneTwoThreeSort.Item1);
-        allSortedGroups.AddRange(extraTripleSevenTrios.Item1);
-        allSortedGroups.AddRange(tripleSevenSort.Item1);
-        allSortedGroups.AddRange(extraOneTwoThreeForTrios.Item1);
-
-
-        int minSum = Int32.MaxValue;
-        List<List<CardData>> distinctGroupsList = new List<List<CardData>>();
-        List<CardData> tempLeftoverList = new List<CardData>();
-
-        for (int i = 0; i < allSortedGroups.Count; i++)
-        {
-            // add the first value to check for its distinct groups
-            distinctGroupsList.Clear();
-            tempLeftoverList.Clear();
-
-            distinctGroupsList.Add(allSortedGroups[i]);
-
-            // look for any intersections between the first value and all other groups
-            for(int j = 0; j < allSortedGroups.Count; j++)
-            {
-                bool isDistinct = true;
-
-                foreach (List<CardData> distinctGroup in distinctGroupsList)
+                if(sortedGroup.Count == 3 || sortedGroup.Count == 4)
                 {
-                    if (allSortedGroups[j].Intersect(distinctGroup).Count() > 0)
-                        isDistinct = false;
+                    sortedResultGroups.Add(sortedGroup);
+                    leftovers.AddRange(group.Except(sortedGroup));
+                }
+                else
+                    leftovers.AddRange(group);   
+            }
+
+            return Tuple.Create(sortedResultGroups, leftovers);
+        }
+
+        /// <summary>
+        /// Sorts with both algorithms while assuring the sum of the leftovers are minimum
+        /// </summary>
+        public static Tuple<List<List<CardData>>, List<CardData>> SmartSort(List<CardData> listOfCards)
+        {
+            List<List<CardData>> sortedResultGroups = new List<List<CardData>>();
+            List<List<CardData>> allSortedGroups = new List<List<CardData>>();
+            List<CardData> leftovers = new List<CardData>();
+
+            // First do a 1-2-3 sort, and 7-7-7 for it's leftovers for maximum possible combinations
+            Tuple<List<List<CardData>>, List<CardData>> oneTwoThreeSort = OneTwoThreeSort(listOfCards);
+            Tuple<List<List<CardData>>, List<CardData>> extraTripleSevenTrios = TripleSevenSort(oneTwoThreeSort.Item2);
+
+            // check the possible combinations of consecutive groups with larger values
+            IEnumerable<IEnumerable<CardData>> oneTwoThreeCombinations = null;
+            foreach (List<CardData> cardGroup in oneTwoThreeSort.Item1)
+            {
+                if (cardGroup.Count > 3)
+                    oneTwoThreeCombinations = cardGroup.GetOrderedSubEnumerables();
+
+                if (oneTwoThreeCombinations != null)
+                    allSortedGroups.AddRange(oneTwoThreeCombinations.Select(i => i.ToList())
+                                                                    .Where(list => list.Count >= 3).ToList());
+            }
+
+            // Then do a 7-7-7 sort, and 1-2-3 for it's leftovers
+            Tuple<List<List<CardData>>, List<CardData>> tripleSevenSort = TripleSevenSort(listOfCards);
+            Tuple<List<List<CardData>>, List<CardData>> extraOneTwoThreeForTrios = OneTwoThreeSort(tripleSevenSort.Item2);
+
+            // check the possible combinations of groups with larger values
+            IEnumerable<IEnumerable<CardData>> tripleSevenCombinations = null;
+            foreach (List<CardData> cardGroup in tripleSevenSort.Item1)
+            {
+                if (cardGroup.Count > 3)
+                    tripleSevenCombinations = cardGroup.DifferentCombinations(3);
+            
+                if(tripleSevenCombinations != null)
+                    allSortedGroups.AddRange(tripleSevenCombinations.Select(i => i.ToList()).ToList());
+            }
+
+            allSortedGroups.AddRange(oneTwoThreeSort.Item1);
+            allSortedGroups.AddRange(extraTripleSevenTrios.Item1);
+            allSortedGroups.AddRange(tripleSevenSort.Item1);
+            allSortedGroups.AddRange(extraOneTwoThreeForTrios.Item1);
+
+            int minSum = Int32.MaxValue;
+            List<List<CardData>> distinctGroupsList = new List<List<CardData>>();
+            List<CardData> tempLeftoverList = new List<CardData>();
+
+            for (int i = 0; i < allSortedGroups.Count; i++)
+            {
+                // clear temp lists
+                if(distinctGroupsList.Count > 0)
+                    distinctGroupsList.Clear();
+                if (tempLeftoverList.Count > 0)
+                    tempLeftoverList.Clear();
+
+                // add the first value to check for its distinct groups
+                distinctGroupsList.Add(allSortedGroups[i]);
+
+                // look for any intersections between the first value and all other groups
+                for(int j = 0; j < allSortedGroups.Count; j++)
+                {
+                    bool isDistinct = true;
+
+                    foreach (List<CardData> distinctGroup in distinctGroupsList)
+                    {
+                        if (allSortedGroups[j].Intersect(distinctGroup).Count() > 0)
+                            isDistinct = false;
+                    }
+
+                    if(isDistinct)
+                        distinctGroupsList.Add(allSortedGroups[j]);
                 }
 
-                if(isDistinct)
-                    distinctGroupsList.Add(allSortedGroups[j]);
+                // get the leftovers of the current group combination
+                tempLeftoverList = listOfCards;
+                for (int a = 0; a < distinctGroupsList.Count; a++)
+                    tempLeftoverList = tempLeftoverList.Except(distinctGroupsList[a]).ToList();
+
+                // calculate the sum
+                int sum = 0;
+                for (int a = 0; a < tempLeftoverList.Count; a++)
+                    sum += tempLeftoverList[a].value;
+
+                // overwrite prev minimum if leftovers' sum is less
+                if (sum < minSum)
+                {
+                    minSum = sum;
+
+                    sortedResultGroups.Clear();
+                    leftovers.Clear();
+
+                    foreach (List<CardData> cardDatas in distinctGroupsList)
+                        sortedResultGroups.Add(cardDatas);
+                    foreach (CardData cardData in tempLeftoverList)
+                        leftovers.Add(cardData);
+                }
             }
 
-            tempLeftoverList = listOfCards;
-            for (int a = 0; a < distinctGroupsList.Count; a++)
-                tempLeftoverList = tempLeftoverList.Except(distinctGroupsList[a]).ToList();
-
-            int sum = 0;
-            for (int a = 0; a < tempLeftoverList.Count; a++)
-                sum += tempLeftoverList[a].value;
-
-            if (sum < minSum)
+            if(sortedResultGroups.Count == 0)
             {
-                minSum = sum;
-
-                sortedResultGroups.Clear();
                 leftovers.Clear();
+                leftovers = listOfCards;
+            }
 
-                foreach (List<CardData> cardDatas in distinctGroupsList)
-                    sortedResultGroups.Add(cardDatas);
-                foreach (CardData cardData in tempLeftoverList)
-                    leftovers.Add(cardData);
+            return Tuple.Create(sortedResultGroups, leftovers);
+        }
+
+        #endregion
+    }
+
+    public static class Helpers
+    {
+        /// <summary>
+        /// Finds the cards with consecutive values in a card list sorted by value
+        /// </summary>
+        internal static Tuple<List<List<CardData>>, List<CardData>> FindConsecutiveCards(List<CardData> sortedCardList, int minAmount)
+        {
+            List<List<CardData>> consecutiveLists = sortedCardList.Select((item, idx) => new { I = item, G = item.value - idx })
+                                                              .Distinct()
+                                                              .GroupBy(ig => ig.G,
+                                                                        ig => ig.I,
+                                                                        (k, g) => g.ToList()).ToList();
+            List<List<CardData>> resultLists = new List<List<CardData>>();
+            List<CardData> leftovers = new List<CardData>();
+
+            for (int i = 0; i < consecutiveLists.Count; i++)
+            {
+                if (consecutiveLists[i].Count >= minAmount)
+                {
+                    resultLists.Add(consecutiveLists[i]);
+                }
+                else
+                    leftovers.AddRange(consecutiveLists[i]);
+            }
+
+            return Tuple.Create(resultLists, leftovers);
+        }
+
+        /// <summary>
+        /// Helper function to get all possible amount combinations of an IEnumerable
+        /// </summary>
+        /// <param name="k"> minimum amount for the combinations </param>
+        internal static IEnumerable<IEnumerable<T>> DifferentCombinations<T>(this IEnumerable<T> elements, int k)
+        {
+            return k == 0 ? new[] { new T[0] } :
+              elements.SelectMany((e, i) =>
+                elements.Skip(i + 1).DifferentCombinations(k - 1).Select(c => (new[] { e }).Concat(c)));
+        }
+
+        /// <summary>
+        /// Returns the ordered sub enumerables of an IEnumerable
+        /// </summary>
+        internal static IEnumerable<IEnumerable<T>> GetOrderedSubEnumerables<T>(this IEnumerable<T> collection)
+        {
+            var builder = new List<T>();
+            foreach (var element in collection)
+            {
+                builder.Add(element);
+                yield return builder;
             }
         }
-
-        if(sortedResultGroups.Count == 0)
-        {
-            leftovers.Clear();
-            leftovers = listOfCards;
-        }
-
-        return Tuple.Create(sortedResultGroups, leftovers);
-    }
-
-    #endregion
-}
-
-public static class Helpers
-{
-    public static IEnumerable<IEnumerable<T>> DifferentCombinations<T>(this IEnumerable<T> elements, int k)
-    {
-        return k == 0 ? new[] { new T[0] } :
-          elements.SelectMany((e, i) =>
-            elements.Skip(i + 1).DifferentCombinations(k - 1).Select(c => (new[] { e }).Concat(c)));
-    }
-
-    public static IEnumerable<IEnumerable<T>> GetOrderedSubEnumerables<T>(this IEnumerable<T> collection)
-    {
-        var builder = new List<T>();
-        foreach (var element in collection)
-        {
-            builder.Add(element);
-            yield return builder;
-        }
     }
 }
+

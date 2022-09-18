@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace DeckPlayer.Audio
 {
@@ -10,7 +11,7 @@ namespace DeckPlayer.Audio
         public List<AudioSource> sources;
 
         private AudioDataCollection collection;
-        public Dictionary<string, AudioData> AudioDict = new Dictionary<string, AudioData>() { };
+        public Dictionary<string, AudioData> AudioDict = new Dictionary<string, AudioData>();
 
         private void Awake()
         {
@@ -21,12 +22,24 @@ namespace DeckPlayer.Audio
 
             DontDestroyOnLoad(gameObject);
 
+            SceneManager.activeSceneChanged += OnActiveSceneChanged;
+
             collection = Resources.Load<AudioDataCollection>("AudioData/AudioDataCollection");
 
             foreach (AudioData audio in collection.GetCollection())
             {
                 AudioDict.Add(audio.AudioName, audio);
             }
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.activeSceneChanged -= OnActiveSceneChanged;
+        }
+
+        private void OnActiveSceneChanged(Scene arg0, Scene arg1)
+        {
+            DestroySources();
         }
 
         /// <summary>

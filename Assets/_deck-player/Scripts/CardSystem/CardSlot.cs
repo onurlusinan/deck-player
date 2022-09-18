@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-
-using DG.Tweening;
 
 namespace DeckPlayer.CardSystem
 {

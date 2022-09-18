@@ -1,11 +1,13 @@
 using System.Collections;
 using System;
+using System.Collections.Generic;
+
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 using DeckPlayer.CardSystem;
-using System.Collections.Generic;
+using DeckPlayer.Managers;
 
 namespace DeckPlayer.Tests
 { 
